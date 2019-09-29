@@ -76,23 +76,7 @@ sceneform.asset('sampledata/models/frame_upper_right.obj',
         'sampledata/models/frame_upper_right.sfa',
         'src/main/assets/models/frame_upper_right')
 
-
-sceneform.asset('sampledata/models/terrain00.fbx',
-        'default',
-        'sampledata/models/terrain00.sfa',
-        'src/main/assets/terrain00')
-
 sceneform.asset('sampledata/models/valley_montblanc.glb',
         'default',
         'sampledata/models/valley_montblanc.sfa',
         'src/main/assets/valley_montblanc')
-
-sceneform.asset('sampledata/models/test1.glb',
-        'default',
-        'sampledata/models/test1.sfa',
-        'src/main/assets/test1')
-
-sceneform.asset('sampledata/models/map_large.glb',
-        'default',
-        'sampledata/models/map_large.sfa',
-        'src/main/assets/map_large')

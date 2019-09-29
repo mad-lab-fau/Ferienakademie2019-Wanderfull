@@ -38,33 +38,18 @@ public class AugmentedImageNode extends AnchorNode {
   // The augmented image represented by this node.
   private AugmentedImage image;
 
-  // Models of the 4 corners.  We use completable futures here to simplify
+  // Models.  We use completable futures here to simplify
   // the error handling and asynchronous loading.  The loading is started with the
   // first construction of an instance, and then used when the image is set.
-  private static CompletableFuture<ModelRenderable> ulCorner;
-  private static CompletableFuture<ModelRenderable> urCorner;
-  private static CompletableFuture<ModelRenderable> lrCorner;
-  private static CompletableFuture<ModelRenderable> llCorner;
+  private static CompletableFuture<ModelRenderable> mapModel;
 
   public AugmentedImageNode(Context context) {
     // Upon construction, start loading the models for the corners of the frame.
-    if (ulCorner == null) {
-      ulCorner =
-          ModelRenderable.builder()
-              .setSource(context, Uri.parse("test1.sfb"))
-              .build();
-      urCorner =
-          ModelRenderable.builder()
-              .setSource(context, Uri.parse("models/frame_upper_right.sfb"))
-              .build();
-      llCorner =
-          ModelRenderable.builder()
-              .setSource(context, Uri.parse("models/frame_lower_left.sfb"))
-              .build();
-      lrCorner =
-          ModelRenderable.builder()
-              .setSource(context, Uri.parse("models/frame_lower_right.sfb"))
-              .build();
+    if (mapModel == null) {
+      mapModel =
+              ModelRenderable.builder()
+                      .setSource(context, Uri.parse("valley_montblanc.sfb"))
+                      .build();
     }
   }
 
@@ -79,52 +64,32 @@ public class AugmentedImageNode extends AnchorNode {
     this.image = image;
 
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!ulCorner.isDone() || !urCorner.isDone() || !llCorner.isDone() || !lrCorner.isDone()) {
-      CompletableFuture.allOf(ulCorner, urCorner, llCorner, lrCorner)
-          .thenAccept((Void aVoid) -> setImage(image))
-          .exceptionally(
-              throwable -> {
-                Log.e(TAG, "Exception loading", throwable);
-                return null;
-              });
+    if (!mapModel.isDone()) {
+      CompletableFuture.allOf(mapModel)
+              .thenAccept((Void aVoid) -> setImage(image))
+              .exceptionally(
+                      throwable -> {
+                        Log.e(TAG, "Exception loading", throwable);
+                        return null;
+                      });
     }
 
     // Set the anchor based on the center of the image.
     setAnchor(image.createAnchor(image.getCenterPose()));
 
-    // Make the 4 corner nodes.
+    // Make the 3 corner nodes.
     Vector3 localPosition = new Vector3();
-    Node cornerNode;
+    Node mapNode;
 
-    // Upper left corner.
+    // mapModel.
     localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
-    cornerNode = new Node();
-    cornerNode.setParent(this);
-    cornerNode.setLocalScale(new Vector3(0.1f*image.getExtentX(), 0.1f, 0.1f*image.getExtentZ()));
+    mapNode = new Node();
+    mapNode.setParent(this);
+    mapNode.setLocalScale(new Vector3(0.1f*image.getExtentX(), 0.1f, 0.1f*image.getExtentZ()));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
-    cornerNode.setLocalPosition(localPosition);
-    cornerNode.setRenderable(ulCorner.getNow(null));
+    mapNode.setLocalPosition(localPosition);
+    mapNode.setRenderable(mapModel.getNow(null));
 
-    // Upper right corner.
-    localPosition.set(0.5f * image.getExtentX(), 0.0f, -0.5f * image.getExtentZ());
-    cornerNode = new Node();
-    cornerNode.setParent(this);
-    cornerNode.setLocalPosition(localPosition);
-    cornerNode.setRenderable(urCorner.getNow(null));
-
-    // Lower right corner.
-    localPosition.set(0.5f * image.getExtentX(), 0.0f, 0.5f * image.getExtentZ());
-    cornerNode = new Node();
-    cornerNode.setParent(this);
-    cornerNode.setLocalPosition(localPosition);
-    cornerNode.setRenderable(lrCorner.getNow(null));
-
-    // Lower left corner.
-    localPosition.set(-0.5f * image.getExtentX(), 0.0f, 0.5f * image.getExtentZ());
-    cornerNode = new Node();
-    cornerNode.setParent(this);
-    cornerNode.setLocalPosition(localPosition);
-    cornerNode.setRenderable(llCorner.getNow(null));
   }
 
   public AugmentedImage getImage() {
