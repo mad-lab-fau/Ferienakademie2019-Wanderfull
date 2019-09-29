@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\felix\\OneDrive\\Dokumente\\Uni-Master\\Ferienakademie\\sceneform-android-sdk-1.12.0\\samples\\augmentedimage\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mo\\values-mo.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\felix\\.gradle\\caches\\transforms-2\\files-2.1\\d586b35a69eab793233780c854443974\\core-1.12.0\\res\\values-mo\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8",
+                        "startColumns": "0,0,0,0,0",
+                        "startOffsets": "190,238,291,433,577",
+                        "endColumns": "47,52,141,143,107",
+                        "endOffsets": "237,290,432,576,684"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,107,164,310,458",
+                        "endColumns": "51,56,145,147,111",
+                        "endOffsets": "102,159,305,453,565"
+                    }
+                }
+            ]
+        }
+    ]
+}

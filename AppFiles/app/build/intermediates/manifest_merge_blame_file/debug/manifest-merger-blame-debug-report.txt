@@ -1,0 +1,114 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3   Copyright 2018 Google LLC
+4
+5   Licensed under the Apache License, Version 2.0 (the "License");
+6   you may not use this file except in compliance with the License.
+7   You may obtain a copy of the License at
+8
+9      http://www.apache.org/licenses/LICENSE-2.0
+10
+11   Unless required by applicable law or agreed to in writing, software
+12   distributed under the License is distributed on an "AS IS" BASIS,
+13   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14   See the License for the specific language governing permissions and
+15   limitations under the License.
+16-->
+17<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+18    package="com.google.ar.sceneform.samples.augmentedimage"
+19    android:versionCode="1"
+20    android:versionName="1.0" >
+21
+22    <uses-sdk
+23        android:minSdkVersion="24"
+23-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml
+24        android:targetSdkVersion="28" />
+24-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml
+25
+26    <uses-permission android:name="android.permission.CAMERA" />
+26-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:21:3-62
+26-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:21:20-60
+27    <!--
+28       This tag indicates that this application requires ARCore.  This results in the application
+29       only being visible in the Google Play Store on devices that support ARCore.
+30    -->
+31    <uses-feature
+31-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:24:3-84
+32        android:name="android.hardware.camera.ar"
+32-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:24:17-58
+33        android:required="true" />
+33-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:24:59-82
+34
+35    <application
+35-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:26:3-48:17
+36        android:allowBackup="false"
+36-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:27:7-34
+37        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+37-->[com.android.support:support-compat:28.0.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\10e48dcec33046b00c9fe5d5222cbdda\support-compat-28.0.0\AndroidManifest.xml:22:18-91
+38        android:debuggable="true"
+39        android:icon="@drawable/ic_launcher"
+39-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:28:7-43
+40        android:label="@string/app_name"
+40-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:29:7-39
+41        android:testOnly="true"
+42        android:theme="@style/AppTheme"
+42-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:30:7-38
+43        android:usesCleartextTraffic="false" >
+43-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:31:7-43
+44        <activity
+44-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:34:5-44:16
+45            android:name="com.google.ar.sceneform.samples.augmentedimage.AugmentedImageActivity"
+45-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:35:9-47
+46            android:configChanges="orientation|screenSize"
+46-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:36:9-55
+47            android:exported="true"
+47-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:37:9-32
+48            android:screenOrientation="locked"
+48-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:39:9-43
+49            android:theme="@style/Theme.AppCompat.NoActionBar" >
+49-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:38:9-59
+50            <intent-filter>
+50-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:40:7-43:23
+51                <action android:name="android.intent.action.MAIN" />
+51-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:41:9-60
+51-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:41:17-58
+52
+53                <category android:name="android.intent.category.LAUNCHER" />
+53-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:42:9-68
+53-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:42:19-66
+54            </intent-filter>
+55        </activity>
+56        <!--
+57         This tag indicates that this application requires ARCore.  This results in the Google Play
+58         Store downloading and installing ARCore along with the application.
+59        -->
+60        <meta-data
+60-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:47:5-77
+61            android:name="com.google.ar.core"
+61-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:47:16-49
+62            android:value="required" />
+62-->C:\Users\felix\OneDrive\Dokumente\Uni-Master\Ferienakademie\sceneform-android-sdk-1.12.0\samples\augmentedimage\app\src\main\AndroidManifest.xml:47:50-74
+63        <!-- The minimal version code of ARCore APK required for an app using this SDK. -->
+64        <meta-data
+64-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:33:9-35:41
+65            android:name="com.google.ar.core.min_apk_version"
+65-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:34:13-62
+66            android:value="190805000" /> <!-- This activity is critical for installing ARCore when it is not already present. -->
+66-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:35:13-38
+67        <activity
+67-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:37:9-43:80
+68            android:name="com.google.ar.core.InstallActivity"
+68-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:38:13-62
+69            android:configChanges="keyboardHidden|orientation|screenSize"
+69-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:39:13-74
+70            android:excludeFromRecents="true"
+70-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:40:13-46
+71            android:exported="false"
+71-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:41:13-37
+72            android:launchMode="singleTop"
+72-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:42:13-43
+73            android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
+73-->[com.google.ar:core:1.12.0] C:\Users\felix\.gradle\caches\transforms-2\files-2.1\d586b35a69eab793233780c854443974\core-1.12.0\AndroidManifest.xml:43:13-77
+74    </application>
+75
+76</manifest>
