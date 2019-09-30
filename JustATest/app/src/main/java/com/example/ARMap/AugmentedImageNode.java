@@ -44,6 +44,7 @@ public class AugmentedImageNode extends AnchorNode {
   // the error handling and asynchronous loading.  The loading is started with the
   // first construction of an instance, and then used when the image is set.
   private static CompletableFuture<ModelRenderable> mapModel;
+  private static CompletableFuture<ModelRenderable> marker;
 
   public AugmentedImageNode(Context context) {
     // Upon construction, start loading the models for the corners of the frame.
@@ -52,6 +53,8 @@ public class AugmentedImageNode extends AnchorNode {
               ModelRenderable.builder()
                       .setSource(context, Uri.parse("kompass2_small.sfb"))
                       .build();
+
+      marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
     }
   }
 
@@ -66,8 +69,8 @@ public class AugmentedImageNode extends AnchorNode {
     this.image = image;
 
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!mapModel.isDone()) {
-      CompletableFuture.allOf(mapModel)
+    if (!mapModel.isDone()|!marker.isDone()) {
+      CompletableFuture.allOf(mapModel,marker)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
@@ -91,6 +94,10 @@ public class AugmentedImageNode extends AnchorNode {
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
     mapNode.setRenderable(mapModel.getNow(null));
+
+    Node markerNode = new Node();
+    markerNode.setParent(this);
+    markerNode.setRenderable(marker.getNow(null));
 
   }
 
