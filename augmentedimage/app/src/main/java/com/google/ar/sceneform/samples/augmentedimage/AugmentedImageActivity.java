@@ -16,17 +16,34 @@
 
 package com.google.ar.sceneform.samples.augmentedimage;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.samples.common.helpers.SnackbarHelper;
 import com.google.ar.sceneform.ux.ArFragment;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -42,9 +59,42 @@ import java.util.Map;
  */
 public class AugmentedImageActivity extends AppCompatActivity {
 
+  private class MyLocationListener implements LocationListener {
+    @Override
+    public void onLocationChanged(Location loc) {
+      gpsLongitude = loc.getLongitude();
+      gpsLatitude = loc.getLatitude();
+      gpsAltitude = loc.getAltitude();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+      // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+      // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onStatusChanged(String provider,
+                                int status, Bundle extras) {
+      // TODO Auto-generated method stub
+    }
+  }
+
+  public double gpsLongitude = 0;
+  public double gpsLatitude = 0;
+  public double gpsAltitude = 0;
+
+  private LocationManager locationManager = null;
+  private LocationListener locationListener = null;
+
   private ArFragment arFragment;
   private ImageView fitToScanView;
-
+  private String message = "loading GPS data";
+  private TextView tv = null;
   // Augmented image and its associated center pose anchor, keyed by the augmented image in
   // the database.
   private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
@@ -53,6 +103,27 @@ public class AugmentedImageActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    locationListener = new MyLocationListener();
+    locationManager = (LocationManager)
+            getSystemService(Context.LOCATION_SERVICE);
+
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      // TODO: Consider calling
+      //    ActivityCompat#requestPermissions
+      // here to request the missing permissions, and then overriding
+      //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+      //                                          int[] grantResults)
+      // to handle the case where the user grants the permission. See the documentation
+      // for ActivityCompat#requestPermissions for more details.
+        message = "No GPS data available!";
+      return;
+    }
+    locationManager.requestLocationUpdates(LocationManager
+            .GPS_PROVIDER, 5000, 10, locationListener);
+
+    tv = (TextView) findViewById(R.id.DebugTest);
+    tv.setText(message);
 
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
     fitToScanView = findViewById(R.id.image_view_fit_to_scan);
@@ -76,10 +147,13 @@ public class AugmentedImageActivity extends AppCompatActivity {
   private void onUpdateFrame(FrameTime frameTime) {
     Frame frame = arFragment.getArSceneView().getArFrame();
 
-    // If there is no frame, just return.
+    // If there is no frame, just return
     if (frame == null) {
       return;
     }
+
+    message = "GPS latidude = " + gpsLatitude;
+    tv.setText(message);
 
     Collection<AugmentedImage> updatedAugmentedImages =
         frame.getUpdatedTrackables(AugmentedImage.class);
