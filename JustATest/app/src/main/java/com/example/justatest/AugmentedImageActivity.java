@@ -17,14 +17,22 @@
 package com.example.justatest;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import com.example.justatest.common.helpers.SnackbarHelper;
+import com.google.android.material.navigation.NavigationView;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
-import com.example.justatest.common.helpers.SnackbarHelper;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.Collection;
@@ -46,6 +54,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
   private ArFragment arFragment;
   private ImageView fitToScanView;
+  private AppBarConfiguration mAppBarConfiguration;
 
   // Augmented image and its associated center pose anchor, keyed by the augmented image in
   // the database.
@@ -60,6 +69,21 @@ public class AugmentedImageActivity extends AppCompatActivity {
     fitToScanView = findViewById(R.id.image_view_fit_to_scan);
 
     arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
+
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+    NavigationView navigationView = findViewById(R.id.nav_view);
+    // Passing each menu ID as a set of Ids because each
+    // menu should be considered as top level destinations.
+    mAppBarConfiguration = new AppBarConfiguration.Builder(
+            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+            //        R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+            .setDrawerLayout(drawer)
+            .build();
+    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+    NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+    NavigationUI.setupWithNavController(navigationView, navController);
   }
 
   @Override
@@ -112,5 +136,12 @@ public class AugmentedImageActivity extends AppCompatActivity {
           break;
       }
     }
+  }
+
+  @Override
+  public boolean onSupportNavigateUp() {
+    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+    return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+            || super.onSupportNavigateUp();
   }
 }

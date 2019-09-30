@@ -23,7 +23,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name=".AugmentedImageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="locked">
