@@ -25,6 +25,8 @@ import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.Texture;
+
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -44,16 +46,18 @@ public class AugmentedImageNode extends AnchorNode {
   // first construction of an instance, and then used when the image is set.
   private static CompletableFuture<ModelRenderable> mapModel;
   private static CompletableFuture<ModelRenderable> marker;
+  private static CompletableFuture<Texture> texture;
 
   public AugmentedImageNode(Context context) {
     // Upon construction, start loading the models for the corners of the frame.
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass4.sfb"))
+                      .setSource(context, Uri.parse("kompass_all.sfb"))
                       .build();
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
+
     }
   }
 
@@ -66,7 +70,6 @@ public class AugmentedImageNode extends AnchorNode {
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
   public void setImage(AugmentedImage image) {
     this.image = image;
-
     // If any of the models are not loaded, then recurse when all are loaded.
     if (!mapModel.isDone()|!marker.isDone()) {
       CompletableFuture.allOf(mapModel,marker)
@@ -85,7 +88,7 @@ public class AugmentedImageNode extends AnchorNode {
     Vector3 localPosition = new Vector3();
     Node mapNode;
 
-    // mapModel.
+
     localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
     mapNode = new Node();
     mapNode.setParent(this);
@@ -93,7 +96,7 @@ public class AugmentedImageNode extends AnchorNode {
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
     mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
-    mapNode.setRenderable(mapModel.getNow(null));
+    //mapNode.setRenderable(mapModel.getNow(null));
 
     Node markerNode = new Node();
     markerNode.setParent(this);
