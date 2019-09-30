@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.example.ARMap;
+package com.google.ar.sceneform.samples.augmentedimage;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -50,7 +49,7 @@ public class AugmentedImageNode extends AnchorNode {
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass2_small.sfb"))
+                      .setSource(context, Uri.parse("kompass4.sfb"))
                       .build();
     }
   }
@@ -87,9 +86,10 @@ public class AugmentedImageNode extends AnchorNode {
     localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
     mapNode = new Node();
     mapNode.setParent(this);
-    //mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
+    mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
+    mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
     mapNode.setRenderable(mapModel.getNow(null));
 
   }
