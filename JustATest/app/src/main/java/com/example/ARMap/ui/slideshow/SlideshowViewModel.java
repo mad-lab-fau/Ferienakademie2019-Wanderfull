@@ -1,4 +1,4 @@
-package com.example.justatest.ui.slideshow;
+package com.example.ARMap.ui.slideshow;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

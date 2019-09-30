@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.justatest;
+package com.example.ARMap;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.example.justatest.common.helpers.SnackbarHelper;
+import com.example.ARMap.common.helpers.SnackbarHelper;
 import com.google.ar.core.AugmentedImageDatabase;
 import com.google.ar.core.Config;
 import com.google.ar.core.Session;

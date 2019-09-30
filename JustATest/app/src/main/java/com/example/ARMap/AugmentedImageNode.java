@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.justatest;
+package com.example.ARMap;
 
 import android.content.Context;
 import android.net.Uri;

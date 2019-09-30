@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools='http://schemas.android.com/tools'
-    package="com.example.justatest">
+    package="com.example.ARMap">
 
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Indicates that the app requires ARCore ("AR Required"). Ensures the app is
@@ -23,7 +25,7 @@
 
 
         <activity
-            android:name=".AugmentedImageActivity"
+            android:name="com.example.ARMap.AugmentedImageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="locked">

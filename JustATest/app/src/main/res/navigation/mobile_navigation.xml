@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.justatest.ui.home.HomeFragment"
+        android:name="com.example.ARMap.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_account"
-        android:name="com.example.justatest.ui.gallery.GalleryFragment"
+        android:name="com.example.ARMap.ui.gallery.GalleryFragment"
         android:label="@string/menu_account"
         tools:layout="@layout/fragment_account" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.justatest.ui.gallery.GalleryFragment"
+        android:name="com.example.ARMap.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.justatest.ui.slideshow.SlideshowFragment"
+        android:name="com.example.ARMap.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_tools"
-        android:name="com.example.justatest.ui.tools.ToolsFragment"
+        android:name="com.example.ARMap.ui.tools.ToolsFragment"
         android:label="@string/menu_tools"
         tools:layout="@layout/fragment_tools" />
 

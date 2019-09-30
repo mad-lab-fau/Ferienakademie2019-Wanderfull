@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.justatest.common.helpers;
+package com.example.ARMap.common.helpers;
 
 import android.app.Activity;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.example.justatest;
+package com.example.ARMap;
 
 import org.junit.Test;
 

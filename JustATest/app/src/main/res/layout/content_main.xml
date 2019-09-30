@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
-    <fragment android:name="com.example.justatest.AugmentedImageFragment"
+    <fragment android:name="com.example.ARMap.AugmentedImageFragment"
         android:id="@+id/ux_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -33,5 +33,13 @@
         android:src="@drawable/fit_to_scan"
         android:contentDescription="@string/fit_image_to_scan"
         />
+
+    <TextView
+        android:id="@+id/DebugTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="GPS Koordinaten" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
