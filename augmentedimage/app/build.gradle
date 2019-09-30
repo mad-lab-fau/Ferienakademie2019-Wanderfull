@@ -80,3 +80,9 @@ sceneform.asset('sampledata/models/valley_montblanc.glb',
         'default',
         'sampledata/models/valley_montblanc.sfa',
         'src/main/assets/valley_montblanc')
+
+
+sceneform.asset('sampledata/models/kompass2_small.glb',
+        'default',
+        'sampledata/models/kompass2_small.sfa',
+        'src/main/assets/kompass2_small')
