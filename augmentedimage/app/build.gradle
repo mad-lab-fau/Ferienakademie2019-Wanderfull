@@ -86,3 +86,18 @@ sceneform.asset('sampledata/models/kompass2_small.glb',
         'default',
         'sampledata/models/kompass2_small.sfa',
         'src/main/assets/kompass2_small')
+
+sceneform.asset('sampledata/models/kompass2_fusion.fbx',
+        'default',
+        'sampledata/models/kompass2_fusion.sfa',
+        'src/main/assets/kompass2_fusion')
+
+sceneform.asset('sampledata/models/kompass3.fbx',
+        'default',
+        'sampledata/models/kompass3.sfa',
+        'src/main/assets/kompass3')
+
+sceneform.asset('sampledata/models/kompass4.fbx',
+        'default',
+        'sampledata/models/kompass4.sfa',
+        'src/main/assets/kompass4')
