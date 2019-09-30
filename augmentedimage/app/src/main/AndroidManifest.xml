@@ -18,6 +18,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.google.ar.sceneform.samples.augmentedimage">
 
+
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-feature android:name="android.hardware.location.gps" />
+
+
+
   <uses-permission android:name="android.permission.CAMERA"/>
   <!-- This tag indicates that this application requires ARCore.  This results in the application
        only being visible in the Google Play Store on devices that support ARCore. -->
