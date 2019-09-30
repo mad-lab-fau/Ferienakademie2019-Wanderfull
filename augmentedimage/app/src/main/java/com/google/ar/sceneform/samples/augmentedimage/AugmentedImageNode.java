@@ -48,7 +48,7 @@ public class AugmentedImageNode extends AnchorNode {
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("valley_montblanc.sfb"))
+                      .setSource(context, Uri.parse("kompass2_small.sfb"))
                       .build();
     }
   }
@@ -85,7 +85,7 @@ public class AugmentedImageNode extends AnchorNode {
     localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
     mapNode = new Node();
     mapNode.setParent(this);
-    mapNode.setLocalScale(new Vector3(0.1f*image.getExtentX(), 0.1f, 0.1f*image.getExtentZ()));
+    //mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
     mapNode.setRenderable(mapModel.getNow(null));
