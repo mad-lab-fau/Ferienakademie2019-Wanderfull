@@ -40,6 +40,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
+    api 'io.ticofab.androidgpxparser:parser:1.6.0'
+    api 'joda-time:joda-time:2.10.4'
+
 
 
 
@@ -86,3 +89,8 @@ sceneform.asset('sampledata/models/kompass_all.fbx',
         'default',
         'sampledata/models/kompass_all.sfa',
         'src/main/assets/kompass_all')
+
+sceneform.asset('sampledata/models/cube.fbx',
+        'default',
+        'sampledata/models/cube.sfa',
+        'src/main/assets/cube')
