@@ -24,6 +24,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.Collection;
@@ -208,6 +210,9 @@ public class AugmentedImageActivity extends AppCompatActivity {
    *
    * @param frameTime - time since last frame.
    */
+  AugmentedImageNode node;
+  int i=0;
+
   private void onUpdateFrame(FrameTime frameTime) {
     Frame frame = arFragment.getArSceneView().getArFrame();
 
@@ -239,7 +244,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
             //if(mapView){
 
             //} case
-            AugmentedImageNode node = new AugmentedImageNode(this, "kompass_all.sfb");
+            node = new AugmentedImageNode(this, "kompass_all.sfb");
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);
@@ -249,6 +254,12 @@ public class AugmentedImageActivity extends AppCompatActivity {
         case STOPPED:
           augmentedImageMap.remove(augmentedImage);
           break;
+      }
+      if(node != null) {
+        Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) -0.03);
+        Log.d("mapgps", "vector: " + markerLocation.toString());
+        i++;
+        node.markerNode.setLocalPosition(markerLocation);
       }
     }
 
