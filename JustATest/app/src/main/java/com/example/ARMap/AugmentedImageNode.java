@@ -48,12 +48,12 @@ public class AugmentedImageNode extends AnchorNode {
   private static CompletableFuture<ModelRenderable> marker;
   private static CompletableFuture<Texture> texture;
 
-  public AugmentedImageNode(Context context) {
+  public AugmentedImageNode(Context context,String src) {
     // Upon construction, start loading the models for the corners of the frame.
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .setSource(context, Uri.parse(src))
                       .build();
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();

@@ -134,7 +134,6 @@ public class AugmentedImageActivity extends AppCompatActivity {
   }
 
 
-
   @Override
   public void onRequestPermissionsResult(int requestCode,
                                          String[] permissions, int[] grantResults) {
@@ -237,7 +236,10 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
           // Create a new anchor for newly found images.
           if (!augmentedImageMap.containsKey(augmentedImage)) {
-            AugmentedImageNode node = new AugmentedImageNode(this);
+            //if(mapView){
+
+            //} case
+            AugmentedImageNode node = new AugmentedImageNode(this, "kompass_all.sfb");
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);
