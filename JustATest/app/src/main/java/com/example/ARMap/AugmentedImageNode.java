@@ -47,13 +47,14 @@ public class AugmentedImageNode extends AnchorNode {
   private static CompletableFuture<ModelRenderable> mapModel;
   private static CompletableFuture<ModelRenderable> marker;
   private static CompletableFuture<Texture> texture;
+  public static Node markerNode;
 
-  public AugmentedImageNode(Context context) {
+  public AugmentedImageNode(Context context,String src) {
     // Upon construction, start loading the models for the corners of the frame.
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .setSource(context, Uri.parse(src))
                       .build();
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
@@ -98,17 +99,17 @@ public class AugmentedImageNode extends AnchorNode {
     mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
     mapNode.setRenderable(mapModel.getNow(null));
 
-    Node markerNode = new Node();
+    markerNode = new Node();
     markerNode.setParent(this);
     //Vector3 markerLocation = new Vector3(0f,-0.01f,0f);
-    Vector3 markerLocation = mapGPS(46.745958,11.359498, (1250*0.00004)-0.03);
-    Log.d("mapgps", "vector: "+markerLocation.toString());
-    markerNode.setLocalPosition(markerLocation);
+    //Vector3 markerLocation = mapGPS(46.745958,11.359498, (1250*0.00004)-0.03);
+
+    //markerNode.setLocalPosition(markerLocation);
     markerNode.setRenderable(marker.getNow(null));
 
   }
 
-  private Vector3 mapGPS(double lati, double longi, double zOff){
+  public Vector3 mapGPS(double lati, double longi, double zOff){
     double midN = 46.684697;
     double midE = 11.432316;
     double relLat = midN - lati;
