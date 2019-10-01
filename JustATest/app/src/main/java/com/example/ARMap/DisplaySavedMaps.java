@@ -18,11 +18,11 @@ public class DisplaySavedMaps extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton maps_button = findViewById(R.id.maps_button);
+        maps_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "There are no maps to add", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

@@ -18,11 +18,11 @@ public class DisplaySettings extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton settings_button = findViewById(R.id.settings_button);
+        settings_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Settings saved", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

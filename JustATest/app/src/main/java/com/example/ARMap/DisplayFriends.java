@@ -18,11 +18,11 @@ public class DisplayFriends extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton friends_button = findViewById(R.id.friends_button);
+        friends_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "You don't have any more friends to add :(", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
