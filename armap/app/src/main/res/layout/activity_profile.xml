@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="+266 225 225"/>
+                android:text="+497 225 225"/>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
