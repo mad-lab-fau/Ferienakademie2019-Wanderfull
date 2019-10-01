@@ -31,6 +31,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -95,6 +96,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
   private LocationManager locationManager = null;
   private LocationListener locationListener = null;
+  private final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
   private String message = "loading GPS data";
   private TextView tv = null;
 
@@ -110,34 +112,11 @@ public class AugmentedImageActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    locationListener = new MyLocationListener();
-    locationManager = (LocationManager)
-            getSystemService(Context.LOCATION_SERVICE);
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      // TODO: Consider calling
-      //    ActivityCompat#requestPermissions
-      // here to request the missing permissions, and then overriding
-      //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-      //                                          int[] grantResults)
-      // to handle the case where the user grants the permission. See the documentation
-      // for ActivityCompat#requestPermissions for more details.
-      message = "No GPS data available!";
-      return;
-    }
-    locationManager.requestLocationUpdates(LocationManager
-            .GPS_PROVIDER, 5000, 10, locationListener);
-
     tv = (TextView) findViewById(R.id.DebugTest);
     tv.setText(message);
-
-
-
-
     arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
     fitToScanView = findViewById(R.id.image_view_fit_to_scan);
-
     arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
-
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -154,9 +133,72 @@ public class AugmentedImageActivity extends AppCompatActivity {
     NavigationUI.setupWithNavController(navigationView, navController);
   }
 
+
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+                                         String[] permissions, int[] grantResults) {
+    switch (requestCode) {
+      case MY_PERMISSIONS_REQUEST_LOCATION: {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          // permission was granted, yay! Do the
+          // contacts-related task you need to do.
+          locationManager.requestLocationUpdates(LocationManager
+                  .GPS_PROVIDER, 5000, 10, locationListener);
+        } else {
+          // permission denied, boo! Disable the
+          // functionality that depends on this permission.
+          gpsLongitude = 0;
+          gpsLatitude = 0;
+          gpsAltitude = 0;
+        }
+        return;
+      }
+      default:
+
+      // other 'case' lines to check for other
+      // permissions this app might request.
+    }
+  }
+
+
   @Override
   protected void onResume() {
     super.onResume();
+    locationListener = new MyLocationListener();
+    locationManager = (LocationManager)
+            getSystemService(Context.LOCATION_SERVICE);
+
+
+
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+
+      // Permission is not granted
+      // Should we show an explanation?
+      if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+              Manifest.permission.ACCESS_FINE_LOCATION)) {
+        // Show an explanation to the user *asynchronously* -- don't block
+        // this thread waiting for the user's response! After the usre
+        // sees the explanation, try again to request the permission.
+      } else {
+        // No explanation needed; request the permission
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_LOCATION);
+
+        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+        // app-defined int constant. The callback method gets the
+        // result of the request.
+      }
+    } else {
+      // Permission has already been granted
+      locationManager.requestLocationUpdates(LocationManager
+              .GPS_PROVIDER, 5000, 10, locationListener);
+    }
     if (augmentedImageMap.isEmpty()) {
       fitToScanView.setVisibility(View.VISIBLE);
     }

@@ -152,7 +152,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
       return;
     }
 
-    message = "GPS latidude = " + gpsLatitude;
+    message = "GPS latidude = " + gpsLatitude + ";GPS longitude = " + gpsLongitude + ";GPS altitude = " + gpsAltitude;
     tv.setText(message);
 
     Collection<AugmentedImage> updatedAugmentedImages =
