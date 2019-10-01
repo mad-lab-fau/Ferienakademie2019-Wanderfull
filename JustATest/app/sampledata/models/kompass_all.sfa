@@ -4,46 +4,46 @@
       path: 'sampledata/models/kompass_all.fbx',
     },
   ],
-  materials: [
-    {
-      name: 'overlay',
-      parameters: [
-        {
-                  baseColor: [
-                    1,
-                    1,
-                    1,
-                    1,
-                  ],
-                },
+    materials: [
+      {
+        name: 'Material.006',
+        parameters: [
 
-        {
-          baseColorMap: 'gmoverlay_large',
-        },
-        {
-          normalMap: null,
-        },
-        {
-          interpolatedColor: null,
-        },
-        {
-          metallic: 0,
-        },
-        {
-          metallicMap: null,
-        },
-        {
-          roughness: 1,
-        },
-        {
-          roughnessMap: null,
-        },
-        {
-          opacity: null,
-        },
-      ],
-      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
-    },
+            {
+                      baseColor: [
+                        1,
+                        1,
+                        1,
+                        1,
+                      ],
+                    },
+          {
+            baseColorMap: 'gmoverlay_large2',
+          },
+          {
+            normalMap: null,
+          },
+          {
+            interpolatedColor: null,
+          },
+          {
+            metallic: 0,
+          },
+          {
+            metallicMap: null,
+          },
+          {
+            roughness: 1,
+          },
+          {
+            roughnessMap: null,
+          },
+          {
+            opacity: null,
+          },
+        ],
+        source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+      },
   ],
   model: {
     attributes: [
@@ -63,9 +63,12 @@
   samplers: [
               {
                  file: "sampledata/textures/overlay_large.png",
-                 name: 'gmoverlay_large',
+                 name: 'gmoverlay_large2',
                  injections: [
-                        {usage: "BaseColor",},
+                        {usage: "BaseColor",
+                        material_name: "Material.006",
+                        },
+                 
                  ],
                  params: {
                          wrap_s: 'ClampToEdge',
