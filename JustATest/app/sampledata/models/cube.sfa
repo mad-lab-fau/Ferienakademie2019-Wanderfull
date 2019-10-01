@@ -1,0 +1,63 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/cube.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Steel - Satin',
+      parameters: [
+        {
+          baseColor: [
+            0,
+            1,
+            0,
+            0.8,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/cube.fbx',
+    name: 'cube',
+    recenter: 'root',
+    scale: 1,
+
+  },
+  version: '0.54:2',
+}
