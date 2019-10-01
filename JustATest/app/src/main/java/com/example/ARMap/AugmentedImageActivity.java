@@ -44,14 +44,28 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
+import io.ticofab.androidgpxparser.parser.GPXParser;
+import io.ticofab.androidgpxparser.parser.domain.Gpx;
+import io.ticofab.androidgpxparser.parser.domain.Track;
+import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
+import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
+
+import org.joda.time.format.ISODateTimeFormat;
 
 
 /**
@@ -106,6 +120,9 @@ public class AugmentedImageActivity extends AppCompatActivity {
   private ImageView fitToScanView;
   private AppBarConfiguration mAppBarConfiguration;
 
+  private GPXParser mParser = new GPXParser();
+  private Gpx parsedGpx = null;
+
   // Augmented image and its associated center pose anchor, keyed by the augmented image in
   // the database.
   private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
@@ -133,6 +150,20 @@ public class AugmentedImageActivity extends AppCompatActivity {
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     NavigationUI.setupWithNavController(navigationView, navController);
+
+
+    try {
+      InputStream in = getAssets().open("radlspitz.gpx");
+      parsedGpx = mParser.parse(in);
+    } catch (IOException | XmlPullParserException e) {
+      // do something with this exception
+      e.printStackTrace();
+    }
+    if (parsedGpx == null) {
+      Log.e("GPXParse", "onCreate: No Track found" );
+    } else {
+      Log.d("GPXParse", "onCreate: Track loaded");
+    }
   }
 
 
@@ -212,6 +243,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
    */
   AugmentedImageNode node;
   int i=0;
+  int a =0;
 
   private void onUpdateFrame(FrameTime frameTime) {
     Frame frame = arFragment.getArSceneView().getArFrame();
@@ -258,8 +290,34 @@ public class AugmentedImageActivity extends AppCompatActivity {
       if(node != null) {
         Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) -0.03);
         Log.d("mapgps", "vector: " + markerLocation.toString());
-        i++;
         node.markerNode.setLocalPosition(markerLocation);
+
+        List<Track> tracks = parsedGpx.getTracks();
+        if(i==50){
+        for (int i = 0; i < tracks.size(); i++) {
+          Track track = tracks.get(i);
+          Log.d("GPX", "track " + i + ":");
+          List<TrackSegment> segments = track.getTrackSegments();
+          for (int j = 0; j < segments.size(); j++) {
+            TrackSegment segment = segments.get(j);
+            Log.d("GPX", "  segment " + j + ":");
+            for (TrackPoint trackPoint : segment.getTrackPoints()) {
+              if(a%6==0){
+              Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude()+"alt "+trackPoint.getElevation());
+              Node trackNode = new Node();
+              trackNode.setParent(node);
+              if (node.cube.isDone()){
+                Log.d("GPX", "onUpdateFrame: Done");
+                trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(),trackPoint.getLongitude(),(trackPoint.getElevation()*0.00004)-0.025));
+                trackNode.setLocalScale(new Vector3(0.2f,0.2f,0.2f));
+                trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
+                trackNode.setRenderable(node.cube.getNow(null));
+              }}
+              a++;
+            }
+          }
+        }}
+        i++;
       }
     }
 

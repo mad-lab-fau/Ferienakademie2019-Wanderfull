@@ -24,7 +24,11 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.Material;
+import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.rendering.Texture;
 
 import java.util.concurrent.CompletableFuture;
@@ -45,7 +49,9 @@ public class AugmentedImageNode extends AnchorNode {
   // the error handling and asynchronous loading.  The loading is started with the
   // first construction of an instance, and then used when the image is set.
   private static CompletableFuture<ModelRenderable> mapModel;
-  private static CompletableFuture<ModelRenderable> marker;
+  public static CompletableFuture<ModelRenderable> marker;
+  //private static CompletableFuture<Material> material;
+  public static CompletableFuture<ModelRenderable> cube;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
 
@@ -58,6 +64,11 @@ public class AugmentedImageNode extends AnchorNode {
                       .build();
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
+      cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
+
+      //MaterialFactory materialFactory= new MaterialFactory();
+      //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
+
 
     }
   }
@@ -72,8 +83,8 @@ public class AugmentedImageNode extends AnchorNode {
   public void setImage(AugmentedImage image) {
     this.image = image;
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!mapModel.isDone()|!marker.isDone()) {
-      CompletableFuture.allOf(mapModel,marker)
+    if (!mapModel.isDone()|!marker.isDone()|!cube.isDone()) {
+      CompletableFuture.allOf(mapModel,marker,cube)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
@@ -81,7 +92,8 @@ public class AugmentedImageNode extends AnchorNode {
                         return null;
                       });
     }
-
+//    ShapeFactory shapeFactory = new ShapeFactory();
+//    cube = shapeFactory.makeCube(new Vector3(0.005f,0.002f,0.005f),new Vector3(0,0,0),material.getNow(null));
     // Set the anchor based on the center of the image.
     setAnchor(image.createAnchor(image.getCenterPose()));
 
