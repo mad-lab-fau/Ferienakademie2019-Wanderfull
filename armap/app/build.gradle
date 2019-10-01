@@ -42,6 +42,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    api 'io.ticofab.androidgpxparser:parser:1.6.0'
+    api 'joda-time:joda-time:2.10.4'
 }
 apply plugin: 'com.google.ar.sceneform.plugin'
 

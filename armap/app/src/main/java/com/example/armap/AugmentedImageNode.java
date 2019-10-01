@@ -23,8 +23,10 @@ import android.util.Log;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.Texture;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -44,14 +46,27 @@ public class AugmentedImageNode extends AnchorNode {
   // the error handling and asynchronous loading.  The loading is started with the
   // first construction of an instance, and then used when the image is set.
   private static CompletableFuture<ModelRenderable> mapModel;
+  public static CompletableFuture<ModelRenderable> marker;
+  //private static CompletableFuture<Material> material;
+  public static CompletableFuture<ModelRenderable> cube;
+  private static CompletableFuture<Texture> texture;
+  public static Node markerNode;
 
-  public AugmentedImageNode(Context context) {
+  public AugmentedImageNode(Context context, String src) {
     // Upon construction, start loading the models for the corners of the frame.
     if (mapModel == null) {
       mapModel =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass2_small.sfb"))
+                      .setSource(context, Uri.parse(src))
                       .build();
+
+      marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
+      cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
+
+      //MaterialFactory materialFactory= new MaterialFactory();
+      //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
+
+
     }
   }
 
@@ -64,10 +79,9 @@ public class AugmentedImageNode extends AnchorNode {
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
   public void setImage(AugmentedImage image) {
     this.image = image;
-
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!mapModel.isDone()) {
-      CompletableFuture.allOf(mapModel)
+    if (!mapModel.isDone()|!marker.isDone()|!cube.isDone()) {
+      CompletableFuture.allOf(mapModel,marker,cube)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
@@ -75,7 +89,8 @@ public class AugmentedImageNode extends AnchorNode {
                         return null;
                       });
     }
-
+//    ShapeFactory shapeFactory = new ShapeFactory();
+//    cube = shapeFactory.makeCube(new Vector3(0.005f,0.002f,0.005f),new Vector3(0,0,0),material.getNow(null));
     // Set the anchor based on the center of the image.
     setAnchor(image.createAnchor(image.getCenterPose()));
 
@@ -83,15 +98,39 @@ public class AugmentedImageNode extends AnchorNode {
     Vector3 localPosition = new Vector3();
     Node mapNode;
 
-    // mapModel.
-    localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
+
+    localPosition = mapGPS(46.730481f,11.395109f,0f);
     mapNode = new Node();
     mapNode.setParent(this);
     //mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
+    mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
     mapNode.setRenderable(mapModel.getNow(null));
 
+    markerNode = new Node();
+    markerNode.setParent(this);
+    //Vector3 markerLocation = new Vector3(0f,-0.01f,0f);
+    //Vector3 markerLocation = mapGPS(46.745958,11.359498, (1250*0.00004)-0.03);
+
+    //markerNode.setLocalPosition(markerLocation);
+    markerNode.setRenderable(marker.getNow(null));
+
+  }
+
+  public Vector3 mapGPS(double lati, double longi, double zOff){
+    double midN = 46.684697;
+    double midE = 11.432316;
+    double relLat = midN - lati;
+    double relLong = midE - longi;
+    double lat = (midN + lati) / 2 * 0.01745;
+    double dx = (111.3 * Math.cos(lat) * (relLong));
+    double dy = 111.3 * relLat;
+    dx *= 0.04;
+    dy *= 0.04;
+    Vector3 mapped = new Vector3((float) -dx,(float) zOff,(float) dy);
+
+    return mapped;
   }
 
   public AugmentedImage getImage() {

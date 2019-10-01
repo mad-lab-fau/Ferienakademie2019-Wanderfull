@@ -16,6 +16,7 @@ package com.example.ARMap.common.helpers;
 
 import android.app.Activity;
 import android.view.View;
+
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 

@@ -11,6 +11,9 @@ import android.os.Bundle;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.math.Quaternion;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.ux.ArFragment;
 
 
@@ -19,16 +22,30 @@ import com.example.armap.helpers.SnackbarHelper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.navigation.ui.AppBarConfiguration;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.ticofab.androidgpxparser.parser.GPXParser;
+import io.ticofab.androidgpxparser.parser.domain.Gpx;
+import io.ticofab.androidgpxparser.parser.domain.Track;
+import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
+import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,10 +80,15 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
+    private final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private String message = "loading GPS data";
     private TextView tv = null;
     private ArFragment arFragment;
     private ImageView fitToScanView;
+    private AppBarConfiguration mAppBarConfiguration;
+
+    private GPXParser mParser = new GPXParser();
+    private Gpx parsedGpx = null;
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
 
 
@@ -76,23 +98,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        locationListener = new MyLocationListener();
-        locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            message = "No GPS data available!";
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager
-                .GPS_PROVIDER, 5000, 10, locationListener);
-
         tv = (TextView) findViewById(R.id.DebugTest);
         tv.setText(message);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
@@ -100,10 +105,51 @@ public class MainActivity extends AppCompatActivity {
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
 
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        try {
+            InputStream in = getAssets().open("radlspitz.gpx");
+            parsedGpx = mParser.parse(in);
+        } catch (IOException | XmlPullParserException e) {
+            // do something with this exception
+            e.printStackTrace();
+        }
+        if (parsedGpx == null) {
+            Log.e("GPXParse", "onCreate: No Track found" );
+        } else {
+            Log.d("GPXParse", "onCreate: Track loaded");
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    locationManager.requestLocationUpdates(LocationManager
+                            .GPS_PROVIDER, 5000, 10, locationListener);
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    gpsLongitude = 0;
+                    gpsLatitude = 0;
+                    gpsAltitude = 0;
+                }
+                return;
+            }
+            default:
+
+                // other 'case' lines to check for other
+                // permissions this app might request.
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,6 +198,38 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        locationListener = new MyLocationListener();
+        locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the usre
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            locationManager.requestLocationUpdates(LocationManager
+                    .GPS_PROVIDER, 5000, 10, locationListener);
+        }
         if (augmentedImageMap.isEmpty()) {
             fitToScanView.setVisibility(View.VISIBLE);
         }
@@ -162,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param frameTime - time since last frame.
      */
+    AugmentedImageNode node;
+    int i=0;
+    int a =0;
+
     private void onUpdateFrame(FrameTime frameTime) {
         Frame frame = arFragment.getArSceneView().getArFrame();
 
@@ -190,7 +272,10 @@ public class MainActivity extends AppCompatActivity {
 
                     // Create a new anchor for newly found images.
                     if (!augmentedImageMap.containsKey(augmentedImage)) {
-                        AugmentedImageNode node = new AugmentedImageNode(this);
+                        //if(mapView){
+
+                        //} case
+                        node = new AugmentedImageNode(this, "kompass_all.sfb");
                         node.setImage(augmentedImage);
                         augmentedImageMap.put(augmentedImage, node);
                         arFragment.getArSceneView().getScene().addChild(node);
@@ -200,6 +285,38 @@ public class MainActivity extends AppCompatActivity {
                 case STOPPED:
                     augmentedImageMap.remove(augmentedImage);
                     break;
+            }
+            if(node != null) {
+                Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) -0.03);
+                Log.d("mapgps", "vector: " + markerLocation.toString());
+                node.markerNode.setLocalPosition(markerLocation);
+
+                List<Track> tracks = parsedGpx.getTracks();
+                if(i==50){
+                    for (int i = 0; i < tracks.size(); i++) {
+                        Track track = tracks.get(i);
+                        Log.d("GPX", "track " + i + ":");
+                        List<TrackSegment> segments = track.getTrackSegments();
+                        for (int j = 0; j < segments.size(); j++) {
+                            TrackSegment segment = segments.get(j);
+                            Log.d("GPX", "  segment " + j + ":");
+                            for (TrackPoint trackPoint : segment.getTrackPoints()) {
+                                if(a%6==0){
+                                    Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude()+"alt "+trackPoint.getElevation());
+                                    Node trackNode = new Node();
+                                    trackNode.setParent(node);
+                                    if (node.cube.isDone()){
+                                        Log.d("GPX", "onUpdateFrame: Done");
+                                        trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(),trackPoint.getLongitude(),(trackPoint.getElevation()*0.00004)-0.025));
+                                        trackNode.setLocalScale(new Vector3(0.2f,0.2f,0.2f));
+                                        trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
+                                        trackNode.setRenderable(node.cube.getNow(null));
+                                    }}
+                                a++;
+                            }
+                        }
+                    }}
+                i++;
             }
         }
 
