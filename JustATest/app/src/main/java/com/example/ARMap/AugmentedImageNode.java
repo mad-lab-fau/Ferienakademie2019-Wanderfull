@@ -89,19 +89,38 @@ public class AugmentedImageNode extends AnchorNode {
     Node mapNode;
 
 
-    localPosition.set(-0.0f * image.getExtentX(), 0.0f, -0.0f * image.getExtentZ());
+    localPosition = mapGPS(46.730481f,11.395109f,0f);
     mapNode = new Node();
     mapNode.setParent(this);
-    mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
+    //mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
     mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
-    //mapNode.setRenderable(mapModel.getNow(null));
+    mapNode.setRenderable(mapModel.getNow(null));
 
     Node markerNode = new Node();
     markerNode.setParent(this);
+    //Vector3 markerLocation = new Vector3(0f,-0.01f,0f);
+    Vector3 markerLocation = mapGPS(46.745958,11.359498, (1250*0.00004)-0.03);
+    Log.d("mapgps", "vector: "+markerLocation.toString());
+    markerNode.setLocalPosition(markerLocation);
     markerNode.setRenderable(marker.getNow(null));
 
+  }
+
+  private Vector3 mapGPS(double lati, double longi, double zOff){
+    double midN = 46.684697;
+    double midE = 11.432316;
+    double relLat = midN - lati;
+    double relLong = midE - longi;
+    double lat = (midN + lati) / 2 * 0.01745;
+    double dx = (111.3 * Math.cos(lat) * (relLong));
+    double dy = 111.3 * relLat;
+    dx *= 0.04;
+    dy *= 0.04;
+    Vector3 mapped = new Vector3((float) -dx,(float) zOff,(float) dy);
+
+    return mapped;
   }
 
   public AugmentedImage getImage() {
