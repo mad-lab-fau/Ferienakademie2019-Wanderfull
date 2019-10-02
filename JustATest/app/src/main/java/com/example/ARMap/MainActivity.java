@@ -291,9 +291,13 @@ public class MainActivity extends AppCompatActivity {
      * @param frameTime - time since last frame.
      */
     AugmentedImageNode node;
+
     private int i = 0;
     private int a = 0;
     private boolean drawGPS = false;
+    boolean friendsDrawn= false;
+    boolean peaksDrawn = false;
+
 
     private void onUpdateFrame(FrameTime frameTime) {
         Frame frame = arFragment.getArSceneView().getArFrame();
@@ -342,11 +346,30 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
-
                 if (node.cube.isDone() && !drawGPS) {
                     drawGPS();
                     drawGPS = true;
                 }
+
+                Vector3 friendLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 friendLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
+                Vector3 friendLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
+                if(node.marker.isDone()&&!friendsDrawn) {
+                    setFakeFriends(friendLocation1);
+                    setFakeFriends(friendLocation2);
+                    setFakeFriends(friendLocation3);
+                    friendsDrawn=true;
+                }
+
+                // mountain peaks
+                Vector3 peakLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 peakLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
+                Vector3 peakLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
+
+                /*if(node.marker.isDone() && !peaksDrawn) {
+
+                }*/
+
             }
 
 
@@ -373,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
                             trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
                             trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
                             trackNode.setRenderable(node.cube.getNow(null));
+
                         }
                     }
                     a++;
@@ -381,5 +405,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void setFakeFriends(Vector3 friendLocation) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.hiker.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Friends Done");
+            trackNode.setLocalPosition(friendLocation);
+            trackNode.setRenderable(node.hiker.getNow(null));
+        }
+    }
+
+    private void setPeaks(Vector3 peakLocation) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.cross.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Friends Done");
+            trackNode.setLocalPosition(peakLocation);
+            trackNode.setRenderable(node.cross.getNow(null));
+        }
     }
 }
