@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplaySavedMaps">
+    tools:context=".DisplaySavedTracks">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,13 +21,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/maps_button"
+        android:id="@+id/tracks_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
-    <include layout="@layout/content_saved_maps" />
+    <include layout="@layout/content_saved_tracks" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

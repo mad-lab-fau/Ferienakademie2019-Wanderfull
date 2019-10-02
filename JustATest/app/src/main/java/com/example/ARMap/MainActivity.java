@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_savedmaps) {
-            Intent sacedMapsIntent = new Intent(this, DisplaySavedMaps.class);
+            Intent sacedMapsIntent = new Intent(this, DisplaySavedTracks.class);
             startActivity(sacedMapsIntent);
             overridePendingTransition(R.anim.nav_default_pop_enter_anim, R.anim.nav_default_pop_exit_anim);
             return true;
