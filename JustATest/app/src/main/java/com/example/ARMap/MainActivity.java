@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -133,11 +134,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
                 edit().clear().apply();
         fab = findViewById(R.id.fab);
-        fab1 = findViewById(R.id.fab1);
+        /*ab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
+        fab3 = findViewById(R.id.fab3);*/
 
         fab.setOnClickListener(this);
+
+//        fab1.setOnClickListener(this);
+//        fab2.setOnClickListener(this);
+//        fab3.setOnClickListener(this);
     }
 
     @Override
@@ -230,14 +235,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab:
                 if (!isFABOpen) {
                     isFABOpen = true;
-                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+
+//                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+//                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+//                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
                 } else {
                     isFABOpen = false;
-                    fab1.animate().translationY(0);
-                    fab2.animate().translationY(0);
-                    fab3.animate().translationY(0);
+                    fab1.setBackgroundColor(Color.parseColor("#003360"));
+//                    fab1.animate().translationY(0);
+//                    fab2.animate().translationY(0);
+//                    fab3.animate().translationY(0);
                 }
                 break;
         }
@@ -379,8 +386,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
+                node.addChild(node.mapNode1);
+            if(isFABOpen) {
+                node.removeChild(node.mapNode1);
+            }else{
 
-                node.mapNode.setRenderable(node.mapModel_satellite.getNow(null));
+            }
 
                 Log.d("SELECT TRACK", "onUpdateFrame: " + track);
 
