@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab2;
     private FloatingActionButton fab3;
 
-    private boolean isFABOpen;
+    private boolean isFABOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab3 = findViewById(R.id.fab3);*/
 
         fab.setOnClickListener(this);
+        fab.setAlpha(0.5f);
 
 //        fab1.setOnClickListener(this);
 //        fab2.setOnClickListener(this);
@@ -233,14 +234,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                if (!isFABOpen) {
-                    isFABOpen = true;
+                if (isFABOpen) {
+                    isFABOpen = false;
+                    fab.setAlpha(0.5f);
 
 //                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
 //                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
 //                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
                 } else {
-                    isFABOpen = false;
+                    isFABOpen = true;
+                    fab.setAlpha(1f);
 
 //                    fab1.animate().translationY(0);
 //                    fab2.animate().translationY(0);
