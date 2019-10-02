@@ -15,6 +15,24 @@
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="15dp">
 
+        <TableRow
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_column="0"
+                android:text="Name"
+                android:padding="3dip"
+                android:gravity="left"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_column="1"
+                android:text="km from your position"
+                android:padding="3dip" />
+        </TableRow>
 
         <TableRow
             android:id="@+id/Friend1"
@@ -22,13 +40,15 @@
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_column="0"
                 android:text="@string/friend1"
                 android:padding="3dip" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="2"
-                android:text="Open..."
+                android:layout_gravity="center"
+                android:layout_column="1"
+                android:text="5.4"
                 android:padding="3dip" />
         </TableRow>
 
@@ -38,13 +58,15 @@
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_column="0"
                 android:text="@string/friend2"
                 android:padding="3dip" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="2"
-                android:text="Open..."
+                android:layout_gravity="center"
+                android:layout_column="1"
+                android:text="13"
                 android:padding="3dip" />
         </TableRow>
 
@@ -54,13 +76,15 @@
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_column="0"
                 android:text="@string/friend3"
                 android:padding="3dip" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="2"
-                android:text="Open..."
+                android:layout_gravity="center"
+                android:layout_column="1"
+                android:text="2.8"
                 android:padding="3dip" />
         </TableRow>
 
@@ -70,13 +94,15 @@
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_column="0"
                 android:text="@string/friend4"
                 android:padding="3dip" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_column="2"
-                android:text="Open..."
+                android:layout_gravity="center"
+                android:layout_column="1"
+                android:text="11.1"
                 android:padding="3dip" />
         </TableRow>
     </TableLayout>
