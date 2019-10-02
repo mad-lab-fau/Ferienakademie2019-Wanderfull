@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
                 } else {
                     isFABOpen = false;
-                    fab1.setBackgroundColor(Color.parseColor("#003360"));
+
 //                    fab1.animate().translationY(0);
 //                    fab2.animate().translationY(0);
 //                    fab3.animate().translationY(0);
