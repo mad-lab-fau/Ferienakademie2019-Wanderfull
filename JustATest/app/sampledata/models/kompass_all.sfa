@@ -68,7 +68,7 @@
                         {usage: "BaseColor",
                         material_name: "Material.006",
                         },
-                 
+
                  ],
                  params: {
                          wrap_s: 'ClampToEdge',

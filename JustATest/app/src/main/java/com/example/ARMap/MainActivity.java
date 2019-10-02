@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (parsedGpx == null) {
-            Log.e("GPXParse", "onCreate: No Track found" );
+            Log.e("GPXParse", "onCreate: No Track found");
         } else {
             Log.d("GPXParse", "onCreate: Track loaded");
         }
@@ -203,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.LOCATION_SERVICE);
 
 
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -241,8 +240,9 @@ public class MainActivity extends AppCompatActivity {
      * @param frameTime - time since last frame.
      */
     AugmentedImageNode node;
-    int i=0;
-    int a =0;
+    private int i = 0;
+    private int a = 0;
+    private boolean drawGPS = false;
 
     private void onUpdateFrame(FrameTime frameTime) {
         Frame frame = arFragment.getArSceneView().getArFrame();
@@ -286,40 +286,47 @@ public class MainActivity extends AppCompatActivity {
                     augmentedImageMap.remove(augmentedImage);
                     break;
             }
-            if(node != null) {
-                Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) -0.03);
+            if (node != null) {
+                Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) - 0.03);
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
-                List<Track> tracks = parsedGpx.getTracks();
-                if(i==50){
-                    for (int i = 0; i < tracks.size(); i++) {
-                        Track track = tracks.get(i);
-                        Log.d("GPX", "track " + i + ":");
-                        List<TrackSegment> segments = track.getTrackSegments();
-                        for (int j = 0; j < segments.size(); j++) {
-                            TrackSegment segment = segments.get(j);
-                            Log.d("GPX", "  segment " + j + ":");
-                            for (TrackPoint trackPoint : segment.getTrackPoints()) {
-                                if(a%6==0){
-                                    Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude()+"alt "+trackPoint.getElevation());
-                                    Node trackNode = new Node();
-                                    trackNode.setParent(node);
-                                    if (node.cube.isDone()){
-                                        Log.d("GPX", "onUpdateFrame: Done");
-                                        trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(),trackPoint.getLongitude(),(trackPoint.getElevation()*0.00004)-0.025));
-                                        trackNode.setLocalScale(new Vector3(0.2f,0.2f,0.2f));
-                                        trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
-                                        trackNode.setRenderable(node.cube.getNow(null));
-                                    }}
-                                a++;
-                            }
+
+                if (node.cube.isDone() && !drawGPS) {
+                    drawGPS();
+                    drawGPS = true;
+                }
+            }
+
+
+        }
+    }
+
+    private void drawGPS() {
+        List<Track> tracks = parsedGpx.getTracks();
+        for (int i = 0; i < tracks.size(); i++) {
+            Track track = tracks.get(i);
+            Log.d("GPX", "track " + i + ":");
+            List<TrackSegment> segments = track.getTrackSegments();
+            for (int j = 0; j < segments.size(); j++) {
+                TrackSegment segment = segments.get(j);
+                Log.d("GPX", "  segment " + j + ":");
+                for (TrackPoint trackPoint : segment.getTrackPoints()) {
+                    if (a % 6 == 0) {
+                        Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude() + "alt " + trackPoint.getElevation());
+                        Node trackNode = new Node();
+                        trackNode.setParent(node);
+                        if (node.cube.isDone()) {
+                            Log.d("GPX", "onUpdateFrame: Done");
+                            trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(), trackPoint.getLongitude(), (trackPoint.getElevation() * 0.00004) - 0.025));
+                            trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
+                            trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
+                            trackNode.setRenderable(node.cube.getNow(null));
                         }
-                    }}
-                i++;
+                    }
+                    a++;
+                }
             }
         }
-
-
     }
 }
