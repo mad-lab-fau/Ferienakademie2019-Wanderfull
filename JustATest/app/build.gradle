@@ -109,3 +109,14 @@ sceneform.asset('sampledata/models/Binoculars.fbx',
         'sampledata/models/Binoculars.sfa',
         'src/main/assets/Binoculars')
 
+
+
+sceneform.asset('sampledata/models/cube_red.fbx',
+        'default',
+        'sampledata/models/cube_red.sfa',
+        'src/main/assets/cube_red')
+
+sceneform.asset('sampledata/models/cube_yellow.fbx',
+        'default',
+        'sampledata/models/cube_yellow.sfa',
+        'src/main/assets/cube_yellow')

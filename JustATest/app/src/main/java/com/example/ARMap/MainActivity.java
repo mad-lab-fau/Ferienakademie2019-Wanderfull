@@ -22,6 +22,8 @@ import com.google.ar.sceneform.ux.ArFragment;
 
 import com.example.ARMap.common.helpers.SnackbarHelper;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,9 +43,12 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import io.ticofab.androidgpxparser.parser.GPXParser;
@@ -335,11 +340,12 @@ public class MainActivity extends AppCompatActivity {
 
                 node.mapNode.setRenderable(node.mapModel_satellite.getNow(null));
 
-                if (node.cube.isDone() && !drawGPS) {
+                if (node.red_cube.isDone() && !drawGPS) {
                     Gpx radl = readGPX("radlspitz.gpx");
-                    drawGPS(radl);
-                    Gpx sonntag = readGPX("FA_sonntag.gpx");
-                    drawGPS(sonntag);
+                    drawGPS(radl, 2);
+
+//                    Gpx sonntag = readGPX("FA_sonntag.gpx");
+//                    drawGPS(sonntag, "green");
                     drawGPS = true;
                 }
 
@@ -381,8 +387,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void drawGPS(Gpx parsedGpx) {
+    private void drawGPS(Gpx parsedGpx, int color) {
         List<Track> tracks = parsedGpx.getTracks();
+        List<Double> incl = computeIncline(parsedGpx);
         for (int i = 0; i < tracks.size(); i++) {
             Track track = tracks.get(i);
             Log.d("GPX", "track " + i + ":");
@@ -395,12 +402,22 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude() + "alt " + trackPoint.getElevation());
                         Node trackNode = new Node();
                         trackNode.setParent(node);
-                        if (node.cube.isDone()) {
+                        if (node.green_cube.isDone() && node.red_cube.isDone() && node.yellow_cube.isDone()) {
                             Log.d("GPX", "onUpdateFrame: Done");
                             trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(), trackPoint.getLongitude(), (trackPoint.getElevation() * 0.00004) - 0.025));
                             trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
                             trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
-                            trackNode.setRenderable(node.cube.getNow(null));
+                            double incline = incl.get(a);
+                            if (incline>2.8) {
+                                trackNode.setRenderable(node.red_cube.getNow(null));
+                            } else if (incline<2.8&&incline>1) {
+                                trackNode.setRenderable(node.green_cube.getNow(null));
+                            } else if (incline<1) {
+                                trackNode.setRenderable(node.yellow_cube.getNow(null));
+                            } else {
+                                trackNode.setRenderable(node.green_cube.getNow(null));
+
+                            }
 
                         }
                     }
@@ -427,6 +444,40 @@ public class MainActivity extends AppCompatActivity {
             Log.d("GPXParse", "onCreate: Track loaded");
         }
         return parsedGpx;
+    }
+
+
+    private List<Double> computeIncline(Gpx parsedGpx) {
+        List<Double> incl = new ArrayList<Double>();
+        TrackPoint old = null;
+        TrackPoint neu = null;
+        List<Track> tracks = parsedGpx.getTracks();
+
+        for (int i = 0; i < tracks.size(); i++) {
+            Track track = tracks.get(i);
+            Log.d("GPX", "track " + i + ":");
+            List<TrackSegment> segments = track.getTrackSegments();
+            for (int j = 0; j < segments.size(); j++) {
+                TrackSegment segment = segments.get(j);
+                Log.d("GPX", "  segment " + j + ":");
+                for (TrackPoint trackPoint : segment.getTrackPoints()) {
+                    Log.d("INCLINE", "raw: " + segment.getTrackPoints().size());
+                    neu = trackPoint;
+                    if (old != null) {
+                        double incline = Math.abs(neu.getElevation() - old.getElevation());
+                        incl.add(incline);
+                        Log.d("INCLINE", "computeIncline: " + incline);
+                    }
+                    old = trackPoint;
+                }
+
+
+            }
+        }
+
+        Log.d("INCLINE", "result: " + incl.size());
+
+        return incl;
     }
 
     private void setFakeFriends(Vector3 friendLocation) {

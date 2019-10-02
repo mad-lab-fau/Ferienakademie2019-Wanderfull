@@ -56,7 +56,9 @@ public class AugmentedImageNode extends AnchorNode {
   public static CompletableFuture<ModelRenderable> cross;
   public static CompletableFuture<ModelRenderable> binoculars;
   //private static CompletableFuture<Material> material;
-  public static CompletableFuture<ModelRenderable> cube;
+  public static CompletableFuture<ModelRenderable> green_cube;
+  public static CompletableFuture<ModelRenderable> red_cube;
+  public static CompletableFuture<ModelRenderable> yellow_cube;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
   public static Node mapNode;
@@ -79,10 +81,12 @@ public class AugmentedImageNode extends AnchorNode {
 
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
-      cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
+      green_cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
       hiker = ModelRenderable.builder().setSource(context,Uri.parse("hiker.sfb")).build();
       cross = ModelRenderable.builder().setSource(context,Uri.parse("Cross.sfb")).build();
       binoculars = ModelRenderable.builder().setSource(context,Uri.parse("Binoculars.sfb")).build();
+      red_cube = ModelRenderable.builder().setSource(context,Uri.parse("cube_red.sfb")).build();
+      yellow_cube = ModelRenderable.builder().setSource(context,Uri.parse("cube_yellow.sfb")).build();
       //MaterialFactory materialFactory= new MaterialFactory();
       //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
 
@@ -100,8 +104,8 @@ public class AugmentedImageNode extends AnchorNode {
   public void setImage(AugmentedImage image) {
     this.image = image;
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!mapModel_satellite.isDone()|!marker.isDone()|!cube.isDone()) {
-      CompletableFuture.allOf(mapModel_satellite,marker,cube)
+    if (!mapModel_satellite.isDone()|!marker.isDone()|!red_cube.isDone()) {
+      CompletableFuture.allOf(mapModel_satellite,marker,red_cube)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
