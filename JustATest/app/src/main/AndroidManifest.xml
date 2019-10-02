@@ -16,8 +16,8 @@
     <application
 
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/icon_mountains"
+        android:roundIcon="@mipmap/icon_mountains"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="false"

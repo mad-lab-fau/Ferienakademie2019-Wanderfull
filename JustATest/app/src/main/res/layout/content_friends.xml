@@ -12,13 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="*"
+        android:divider="@drawable/horizontal_devider"
+        android:showDividers="middle"
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="15dp">
 
         <TableRow
             android:id="@+id/header"
+            android:textColor="#000000"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dip">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
@@ -36,6 +40,8 @@
 
         <TableRow
             android:id="@+id/Friend1"
+            android:textColor="#000000"
+            android:padding="10dip"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -54,6 +60,8 @@
 
         <TableRow
             android:id="@+id/Friend2"
+            android:textColor="#000000"
+            android:padding="10dip"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -72,6 +80,8 @@
 
         <TableRow
             android:id="@+id/Friend3"
+            android:textColor="#000000"
+            android:padding="10dip"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -90,6 +100,8 @@
 
         <TableRow
             android:id="@+id/Friend4"
+            android:textColor="#000000"
+            android:padding="10dip"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
