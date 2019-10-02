@@ -1,0 +1,78 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/full_map_kompass.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material.006',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'gmoverlay_large2',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/full_map_kompass.fbx',
+    name: 'full_map_kompass',
+    recenter: 'root',
+    scale: 0.00004,
+  },
+  samplers: [
+                {
+                   file: "sampledata/textures/kompass_overlay_cut.png",
+                   name: 'gmoverlay_large2',
+                   injections: [
+                          {usage: "BaseColor",
+                          material_name: "Material.006",
+                          },
+
+                   ],
+                   params: {
+                           wrap_s: 'ClampToEdge',
+                           wrap_t: 'ClampToEdge',
+                   },
+                },
+  ],
+  version: '0.54:2',
+}

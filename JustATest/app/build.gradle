@@ -121,9 +121,21 @@ sceneform.asset('sampledata/models/cube_yellow.fbx',
         'sampledata/models/cube_yellow.sfa',
         'src/main/assets/cube_yellow')
 
+
+
+
+
+sceneform.asset('sampledata/models/full_map_kompass.fbx',
+        'default',
+        'sampledata/models/full_map_kompass.sfa',
+        'src/main/assets/full_map_kompass')
+
 sceneform.asset('sampledata/models/kompass_all_satelite.fbx',
         'default',
         'sampledata/models/kompass_all_satelite.sfa',
         'src/main/assets/kompass_all_satelite')
 
-
+sceneform.asset('sampledata/models/full_map_satellite.fbx',
+        'default',
+        'sampledata/models/full_map_satellite.sfa',
+        'src/main/assets/full_map_satellite')
