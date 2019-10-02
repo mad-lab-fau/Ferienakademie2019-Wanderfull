@@ -84,12 +84,28 @@ sceneform.asset('sampledata/models/kugel.fbx',
         'sampledata/models/kugel.sfa',
         'src/main/assets/kugel')
 
+sceneform.asset('sampledata/models/cube.fbx',
+        'default',
+        'sampledata/models/cube.sfa',
+        'src/main/assets/cube')
+
 sceneform.asset('sampledata/models/kompass_all.fbx',
         'default',
         'sampledata/models/kompass_all.sfa',
         'src/main/assets/kompass_all')
 
-sceneform.asset('sampledata/models/cube.fbx',
+sceneform.asset('sampledata/models/hiker.fbx',
         'default',
-        'sampledata/models/cube.sfa',
-        'src/main/assets/cube')
+        'sampledata/models/hiker.sfa',
+        'src/main/assets/hiker')
+
+sceneform.asset('sampledata/models/Cross.fbx',
+        'default',
+        'sampledata/models/Cross.sfa',
+        'src/main/assets/Cross')
+
+sceneform.asset('sampledata/models/Binoculars.fbx',
+        'default',
+        'sampledata/models/Binoculars.sfa',
+        'src/main/assets/Binoculars')
+

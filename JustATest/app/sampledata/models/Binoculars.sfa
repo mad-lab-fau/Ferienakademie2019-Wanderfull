@@ -1,0 +1,66 @@
+{
+  animations: [
+    {
+      clips: [
+        {
+          name: 'Default Take',
+        },
+      ],
+      path: 'sampledata/models/Binoculars.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'unnamed material',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/Binoculars.fbx',
+    name: 'Binoculars',
+    recenter: 'root',
+    scale: 0.570855,
+  },
+  version: '0.54:2',
+}

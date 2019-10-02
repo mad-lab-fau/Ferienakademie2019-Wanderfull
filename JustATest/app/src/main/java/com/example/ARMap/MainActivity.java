@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -98,11 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Deletes shared preferences
@@ -295,11 +291,15 @@ public class MainActivity extends AppCompatActivity {
      * @param frameTime - time since last frame.
      */
     AugmentedImageNode node;
-    int i=0;
-    int a =0;
+
+    private int i = 0;
+    private int a = 0;
+    private boolean drawGPS = false;
+    boolean friendsDrawn= false;
+    boolean peaksDrawn = false;
+
 
     private void onUpdateFrame(FrameTime frameTime) {
-
         Frame frame = arFragment.getArSceneView().getArFrame();
 
         // If there is no frame, just return.
@@ -341,41 +341,89 @@ public class MainActivity extends AppCompatActivity {
                     augmentedImageMap.remove(augmentedImage);
                     break;
             }
-
-            if(node != null) {
-                Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) -0.03);
+            if (node != null) {
+                Vector3 markerLocation = node.mapGPS(gpsLatitude, gpsLongitude, (gpsAltitude * 0.00004) - 0.03);
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
-                List<Track> tracks = parsedGpx.getTracks();
-                if(i==50){
-                    for (int i = 0; i < tracks.size(); i++) {
-                        Track track = tracks.get(i);
-                        Log.d("GPX", "track " + i + ":");
-                        List<TrackSegment> segments = track.getTrackSegments();
-                        for (int j = 0; j < segments.size(); j++) {
-                            TrackSegment segment = segments.get(j);
-                            Log.d("GPX", "  segment " + j + ":");
-                            for (TrackPoint trackPoint : segment.getTrackPoints()) {
-                                if(a%6==0){
-                                    Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude()+"alt "+trackPoint.getElevation());
-                                    Node trackNode = new Node();
-                                    trackNode.setParent(node);
-                                    if (node.cube.isDone()){
-                                        Log.d("GPX", "onUpdateFrame: Done");
-                                        trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(),trackPoint.getLongitude(),(trackPoint.getElevation()*0.00004)-0.025));
-                                        trackNode.setLocalScale(new Vector3(0.2f,0.2f,0.2f));
-                                        trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
-                                        trackNode.setRenderable(node.cube.getNow(null));
-                                    }}
-                                a++;
-                            }
+                if (node.cube.isDone() && !drawGPS) {
+                    drawGPS();
+                    drawGPS = true;
+                }
+
+                Vector3 friendLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 friendLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
+                Vector3 friendLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
+                if(node.marker.isDone()&&!friendsDrawn) {
+                    setFakeFriends(friendLocation1);
+                    setFakeFriends(friendLocation2);
+                    setFakeFriends(friendLocation3);
+                    friendsDrawn=true;
+                }
+
+                // mountain peaks
+                Vector3 peakLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 peakLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
+                Vector3 peakLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
+
+                /*if(node.marker.isDone() && !peaksDrawn) {
+
+                }*/
+
+            }
+
+
+        }
+    }
+
+    private void drawGPS() {
+        List<Track> tracks = parsedGpx.getTracks();
+        for (int i = 0; i < tracks.size(); i++) {
+            Track track = tracks.get(i);
+            Log.d("GPX", "track " + i + ":");
+            List<TrackSegment> segments = track.getTrackSegments();
+            for (int j = 0; j < segments.size(); j++) {
+                TrackSegment segment = segments.get(j);
+                Log.d("GPX", "  segment " + j + ":");
+                for (TrackPoint trackPoint : segment.getTrackPoints()) {
+                    if (a % 6 == 0) {
+                        Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude() + "alt " + trackPoint.getElevation());
+                        Node trackNode = new Node();
+                        trackNode.setParent(node);
+                        if (node.cube.isDone()) {
+                            Log.d("GPX", "onUpdateFrame: Done");
+                            trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(), trackPoint.getLongitude(), (trackPoint.getElevation() * 0.00004) - 0.025));
+                            trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
+                            trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
+                            trackNode.setRenderable(node.cube.getNow(null));
+
                         }
-                    }}
-                i++;
+                    }
+                    a++;
+                }
             }
         }
 
 
+    }
+
+    private void setFakeFriends(Vector3 friendLocation) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.hiker.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Friends Done");
+            trackNode.setLocalPosition(friendLocation);
+            trackNode.setRenderable(node.hiker.getNow(null));
+        }
+    }
+
+    private void setPeaks(Vector3 peakLocation) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.cross.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Friends Done");
+            trackNode.setLocalPosition(peakLocation);
+            trackNode.setRenderable(node.cross.getNow(null));
+        }
     }
 }
