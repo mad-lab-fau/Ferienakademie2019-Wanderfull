@@ -386,11 +386,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
-                node.addChild(node.mapNode1);
-            if(isFABOpen) {
-                node.removeChild(node.mapNode1);
-            }else{
 
+            if(!isFABOpen) {
+                if(node.mapNode2.getParent()!=null){
+                    node.removeChild(node.mapNode2);
+                }
+                node.addChild(node.mapNode1);
+
+            }else{
+                node.removeChild(node.mapNode1);
+                //node.addChild(node.mapNode2);
             }
 
                 Log.d("SELECT TRACK", "onUpdateFrame: " + track);
