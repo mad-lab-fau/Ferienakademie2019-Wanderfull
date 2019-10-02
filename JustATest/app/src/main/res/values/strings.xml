@@ -3,7 +3,7 @@
     <string name="fit_image_to_scan">Fit image to scan</string>
     <string name="action_settings">Settings</string>
     <string name="action_friends">Friends</string>
-    <string name="action_savedmaps">Saved Maps</string>
+    <string name="action_savedtracks">Saved Tracks</string>
     <string name="action_profile">My Profile</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_friends">Friends</string>

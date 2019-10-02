@@ -14,7 +14,7 @@
     <item
         android:id="@+id/action_savedmaps"
         android:orderInCategory="100"
-        android:title="@string/action_savedmaps"
+        android:title="@string/action_savedtracks"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
