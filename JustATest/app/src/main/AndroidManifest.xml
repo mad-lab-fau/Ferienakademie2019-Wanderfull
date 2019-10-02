@@ -21,29 +21,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="false"
-        android:label="@string/app_name"
+        android:label="HikAR"
         android:largeHeap="true"
         android:usesCleartextTraffic="false"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".DisplaySettings"
+            android:name="com.example.ARMap.DisplaySettings"
             android:label="@string/title_activity_display_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".DisplaySavedTracks"
+            android:name="com.example.ARMap.DisplaySavedTracks"
             android:label="@string/title_activity_display_saved_tracks"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DisplayFriends"
+            android:name="com.example.ARMap.DisplayFriends"
             android:label="@string/title_activity_friends"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DisplayProfile"
+            android:name="com.example.ARMap.DisplayProfile"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.ARMap.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
