@@ -11,6 +11,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -37,7 +39,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -57,7 +61,8 @@ import io.ticofab.androidgpxparser.parser.domain.Track;
 import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
 import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
 
     private class MyLocationListener implements LocationListener {
         @Override
@@ -101,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
     private GPXParser mParser = new GPXParser();
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
 
+    private FloatingActionButton fab;
+    private FloatingActionButton fab1;
+    private FloatingActionButton fab2;
+    private FloatingActionButton fab3;
+
+    private boolean isFABOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
         // Delete as soon as possible
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
                 edit().clear().apply();
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -206,12 +223,33 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                if (!isFABOpen) {
+                    isFABOpen = true;
+                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+                } else {
+                    isFABOpen = false;
+                    fab1.animate().translationY(0);
+                    fab2.animate().translationY(0);
+                    fab3.animate().translationY(0);
+                }
+                break;
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         locationListener = new MyLocationListener();
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
+
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -246,14 +284,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*
-         * Get GPS Tracks from activity_saved_tracks
-         * Here the Track ID is requested.
-         * You will get the value with the key "trackID"
-         * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
-         * The preferences are deleted onCreate()
-         * !!! NOT SURE WHERE TO  PUT THIS !!!!
-         * */
-
+        * Get GPS Tracks from activity_saved_tracks
+        * Here the Track ID is requested.
+        * You will get the value with the key "trackID"
+        * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
+        * The preferences are deleted onCreate()
+        * !!! NOT SURE WHERE TO  PUT THIS !!!!
+        * */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         track = prefs.getString("trackID", "no id"); //no id: default value
 
@@ -392,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
                     panoramasDrawn = true;
                 }
             }
+
 
         }
 
