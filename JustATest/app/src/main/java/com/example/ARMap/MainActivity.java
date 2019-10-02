@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
     private GPXParser mParser = new GPXParser();
     private Gpx parsedGpx = null;
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
-
 
 
     @Override
@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.LOCATION_SERVICE);
 
 
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -254,16 +253,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*
-        * Get GPS Tracks from activity_saved_tracks
-        * Here the Track ID is requested.
-        * You will get the value with the key "trackID"
-        * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
-        * The preferences are deleted onCreate()
-        * !!! NOT SURE WHERE TO  PUT THIS !!!!
-        * */
+         * Get GPS Tracks from activity_saved_tracks
+         * Here the Track ID is requested.
+         * You will get the value with the key "trackID"
+         * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
+         * The preferences are deleted onCreate()
+         * !!! NOT SURE WHERE TO  PUT THIS !!!!
+         * */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String data = prefs.getString("trackID", "no id"); //no id: default value
-        if(!"no id".equals(data)) {
+        if (!"no id".equals(data)) {
             //popup to see something
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
@@ -344,16 +343,17 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (node.cube.isDone() && !drawGPS) {
-                    drawGPS();
+                    drawGPS(i);
                     drawGPS = true;
                 }
             }
+            i++;
 
 
         }
     }
 
-    private void drawGPS() {
+    private void drawGPS(int timer) {
         List<Track> tracks = parsedGpx.getTracks();
         for (int i = 0; i < tracks.size(); i++) {
             Track track = tracks.get(i);
@@ -362,20 +362,21 @@ public class MainActivity extends AppCompatActivity {
             for (int j = 0; j < segments.size(); j++) {
                 TrackSegment segment = segments.get(j);
                 Log.d("GPX", "  segment " + j + ":");
-                for (TrackPoint trackPoint : segment.getTrackPoints()) {
-                    if (a % 6 == 0) {
-                        Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude() + "alt " + trackPoint.getElevation());
-                        Node trackNode = new Node();
-                        trackNode.setParent(node);
-                        if (node.cube.isDone()) {
-                            Log.d("GPX", "onUpdateFrame: Done");
-                            trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(), trackPoint.getLongitude(), (trackPoint.getElevation() * 0.00004) - 0.025));
-                            trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
-                            trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
-                            trackNode.setRenderable(node.cube.getNow(null));
-                        }
+                for (int seg = 0; seg < segment.getTrackPoints().size(); seg += 6) {
+                    TrackPoint trackPoint = segment.getTrackPoints().get(seg);
+                    Log.d("GPX", "drawGPS: " + segment.getTrackPoints().size());
+
+                    Log.d("GPX", "    point: lat " + trackPoint.getLatitude() + ", lon " + trackPoint.getLongitude() + "alt " + trackPoint.getElevation());
+                    Node trackNode = new Node();
+                    trackNode.setParent(node);
+                    if (node.cube.isDone()) {
+                        Log.d("GPX", "onUpdateFrame: Done");
+                        trackNode.setLocalPosition(node.mapGPS(trackPoint.getLatitude(), trackPoint.getLongitude(), (trackPoint.getElevation() * 0.00004) - 0.025));
+                        trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
+                        trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
+                        trackNode.setRenderable(node.cube.getNow(null));
                     }
-                    a++;
+
                 }
             }
         }
