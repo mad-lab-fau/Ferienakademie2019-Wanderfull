@@ -52,8 +52,10 @@ public class AugmentedImageNode extends AnchorNode {
   public static CompletableFuture<ModelRenderable> marker;
   //private static CompletableFuture<Material> material;
   public static CompletableFuture<ModelRenderable> cube;
+  public static CompletableFuture<ModelRenderable> cross;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
+
 
   public AugmentedImageNode(Context context,String src) {
     // Upon construction, start loading the models for the corners of the frame.
@@ -65,6 +67,7 @@ public class AugmentedImageNode extends AnchorNode {
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
       cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
+      cross = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
 
       //MaterialFactory materialFactory= new MaterialFactory();
       //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
