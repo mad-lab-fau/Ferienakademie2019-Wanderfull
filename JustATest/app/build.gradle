@@ -90,3 +90,14 @@ sceneform.asset('sampledata/models/cube.fbx',
         'default',
         'sampledata/models/cube.sfa',
         'src/main/assets/cube')
+
+sceneform.asset('sampledata/models/kompass_all_satelite.fbx',
+        'default',
+        'sampledata/models/kompass_all_satelite.sfa',
+        'src/main/assets/kompass_all_satelite')
+
+
+sceneform.asset('sampledata/models/kompass_all_semi.fbx',
+        'default',
+        'sampledata/models/kompass_all_semi.sfa',
+        'src/main/assets/kompass_all_semi')

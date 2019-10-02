@@ -62,7 +62,7 @@
 
   samplers: [
               {
-                 file: "sampledata/textures/overlay_large.png",
+                 file: "sampledata/textures/kompass_overlay_cut.png",
                  name: 'gmoverlay_large2',
                  injections: [
                         {usage: "BaseColor",
