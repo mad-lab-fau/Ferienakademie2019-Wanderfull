@@ -48,7 +48,9 @@ public class AugmentedImageNode extends AnchorNode {
   // Models.  We use completable futures here to simplify
   // the error handling and asynchronous loading.  The loading is started with the
   // first construction of an instance, and then used when the image is set.
-  private static CompletableFuture<ModelRenderable> mapModel;
+  public static CompletableFuture<ModelRenderable> mapModel_satellite;
+  public static CompletableFuture<ModelRenderable> mapModel_transparent;
+  public static CompletableFuture<ModelRenderable> mapModel_kompass;
   public static CompletableFuture<ModelRenderable> marker;
   public static CompletableFuture<ModelRenderable> hiker;
   public static CompletableFuture<ModelRenderable> cross;
@@ -57,14 +59,24 @@ public class AugmentedImageNode extends AnchorNode {
   public static CompletableFuture<ModelRenderable> cube;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
+  public static Node mapNode;
 
-  public AugmentedImageNode(Context context,String src) {
+  public AugmentedImageNode(Context context) {
     // Upon construction, start loading the models for the corners of the frame.
-    if (mapModel == null) {
-      mapModel =
+    if (mapModel_satellite == null) {
+      mapModel_satellite =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse(src))
+                      .setSource(context, Uri.parse("kompass_all.sfb"))
                       .build();
+      mapModel_transparent =
+              ModelRenderable.builder()
+                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .build();
+      mapModel_kompass =
+              ModelRenderable.builder()
+                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .build();
+
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
       cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
@@ -88,8 +100,8 @@ public class AugmentedImageNode extends AnchorNode {
   public void setImage(AugmentedImage image) {
     this.image = image;
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!mapModel.isDone()|!marker.isDone()|!cube.isDone()) {
-      CompletableFuture.allOf(mapModel,marker,cube)
+    if (!mapModel_satellite.isDone()|!marker.isDone()|!cube.isDone()) {
+      CompletableFuture.allOf(mapModel_satellite,marker,cube)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {
@@ -104,7 +116,7 @@ public class AugmentedImageNode extends AnchorNode {
 
     // Make the 3 corner nodes.
     Vector3 localPosition = new Vector3();
-    Node mapNode;
+
 
 
     localPosition = mapGPS(46.730481f,11.395109f,0f);
@@ -114,7 +126,7 @@ public class AugmentedImageNode extends AnchorNode {
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
     mapNode.setLocalPosition(localPosition);
     mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
-    mapNode.setRenderable(mapModel.getNow(null));
+
 
     markerNode = new Node();
     markerNode.setParent(this);
