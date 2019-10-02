@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class DisplaySavedTracks extends AppCompatActivity {
 
 
-
+    public static String[] trackList = new String[] {"Für Leistungssportler (Freitag)", "FA Sonntagswanderung", "Map 3"}; //Liste mit allen Tracks
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,7 @@ public class DisplaySavedTracks extends AppCompatActivity {
         * */
 
         ListView mlistView = (ListView) findViewById(R.id.idListView);
-        String[] trackList = new String[] {"Für Leistungssportler (Freitag)", "FA Sonntagswanderung", "Map 3"}; //Liste mit allen Tracks
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
 

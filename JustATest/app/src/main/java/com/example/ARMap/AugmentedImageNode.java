@@ -56,9 +56,9 @@ public class AugmentedImageNode extends AnchorNode {
   public static CompletableFuture<ModelRenderable> cross;
   public static CompletableFuture<ModelRenderable> binoculars;
   //private static CompletableFuture<Material> material;
-  public static CompletableFuture<ModelRenderable> green_cube;
-  public static CompletableFuture<ModelRenderable> red_cube;
-  public static CompletableFuture<ModelRenderable> yellow_cube;
+  public  CompletableFuture<ModelRenderable> green_cube;
+  public  CompletableFuture<ModelRenderable> red_cube;
+  public  CompletableFuture<ModelRenderable> yellow_cube;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
   public static Node mapNode;
@@ -105,7 +105,7 @@ public class AugmentedImageNode extends AnchorNode {
     this.image = image;
     // If any of the models are not loaded, then recurse when all are loaded.
     if (!mapModel_satellite.isDone()|!marker.isDone()|!red_cube.isDone()) {
-      CompletableFuture.allOf(mapModel_satellite,marker,red_cube)
+      CompletableFuture.allOf(mapModel_satellite,marker,red_cube,green_cube,yellow_cube)
               .thenAccept((Void aVoid) -> setImage(image))
               .exceptionally(
                       throwable -> {

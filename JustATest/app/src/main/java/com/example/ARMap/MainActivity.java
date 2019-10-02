@@ -91,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
-    private String message = "loading GPS data";
-    private TextView tv = null;
+    //    private String message = "loading GPS data";
+//    private TextView tv = null;
     private ArFragment arFragment;
     private ImageView fitToScanView;
     private AppBarConfiguration mAppBarConfiguration;
+    private String track;
 
     private GPXParser mParser = new GPXParser();
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
@@ -106,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Deletes shared preferences
-        tv = (TextView) findViewById(R.id.DebugTest);
-        tv.setText(message);
+//        tv = (TextView) findViewById(R.id.DebugTest);
+//        tv.setText(message);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
         fitToScanView = findViewById(R.id.image_view_fit_to_scan);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
@@ -252,10 +253,12 @@ public class MainActivity extends AppCompatActivity {
          * The preferences are deleted onCreate()
          * !!! NOT SURE WHERE TO  PUT THIS !!!!
          * */
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String data = prefs.getString("trackID", "no id"); //no id: default value
-        if (!"no id".equals(data)) {
-            //popup to see something
+        track = prefs.getString("trackID", "no id"); //no id: default value
+
+        //if (!"no id".equals(data)) {
+        //popup to see something
 //            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 //            builder.setCancelable(true);
 //            builder.setTitle("Track was selected");
@@ -273,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 //            });
 //            AlertDialog dialog = builder.create();
 //            dialog.show();
-        }
+        //}
     }
 
     /**
@@ -285,7 +288,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int i = 0;
     private int a = 0;
-    private boolean drawGPS = false;
+    private boolean track1 = false;
+    private boolean track2 = false;
     boolean friendsDrawn = false;
     boolean peaksDrawn = false;
     boolean panoramasDrawn = false;
@@ -299,8 +303,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        message = "GPS latidude = " + gpsLatitude;
-        tv.setText(message);
+        //message = "GPS latidude = " + gpsLatitude;
+        //tv.setText(message);
 
         Collection<AugmentedImage> updatedAugmentedImages =
                 frame.getUpdatedTrackables(AugmentedImage.class);
@@ -309,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 case PAUSED:
                     // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
                     // but not yet tracked.
-                    String text = "Detected Image " + augmentedImage.getIndex();
+                    String text = "Detected Map: "+augmentedImage.getName();
                     SnackbarHelper.getInstance().showMessage(this, text);
                     break;
 
@@ -338,16 +342,23 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("mapgps", "vector: " + markerLocation.toString());
                 node.markerNode.setLocalPosition(markerLocation);
 
+
                 node.mapNode.setRenderable(node.mapModel_satellite.getNow(null));
 
-                if (node.red_cube.isDone() && !drawGPS) {
+                Log.d("SELECT TRACK", "onUpdateFrame: " + track);
+
+                if ((track.equals(DisplaySavedTracks.trackList[0]))&&!track1) {
                     Gpx radl = readGPX("radlspitz.gpx");
                     drawGPS(radl, 2);
+                    track1 = true;
+                } else if ((track.equals(DisplaySavedTracks.trackList[1])&&!track2)) {
+                    Gpx sonntag = readGPX("FA_sonntag.gpx");
+                    drawGPS(sonntag, 1);
+                    track2 = true;
+                } else {
 
-//                    Gpx sonntag = readGPX("FA_sonntag.gpx");
-//                    drawGPS(sonntag, "green");
-                    drawGPS = true;
                 }
+
 
                 Vector3 friendLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) - 0.03);
                 Vector3 friendLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) - 0.03);
@@ -380,12 +391,13 @@ public class MainActivity extends AppCompatActivity {
                     setPanorama(panoramaLocation2);
                     panoramasDrawn = true;
                 }
-
             }
 
-
         }
+
+
     }
+
 
     private void drawGPS(Gpx parsedGpx, int color) {
         List<Track> tracks = parsedGpx.getTracks();
@@ -408,11 +420,11 @@ public class MainActivity extends AppCompatActivity {
                             trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
                             trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
                             double incline = incl.get(a);
-                            if (incline>2.8) {
+                            if (incline > 2.8) {
                                 trackNode.setRenderable(node.red_cube.getNow(null));
-                            } else if (incline<2.8&&incline>1) {
+                            } else if (incline < 2.8 && incline > 1) {
                                 trackNode.setRenderable(node.green_cube.getNow(null));
-                            } else if (incline<1) {
+                            } else if (incline < 1) {
                                 trackNode.setRenderable(node.yellow_cube.getNow(null));
                             } else {
                                 trackNode.setRenderable(node.green_cube.getNow(null));
@@ -425,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        a = 0;
 
 
     }

@@ -56,7 +56,7 @@
     file: 'sampledata/models/cube_yellow.fbx',
     name: 'cube_yellow',
     recenter: 'root',
-    scale: 1,
+    scale: 1.1,
   },
   version: '0.54:2',
 }

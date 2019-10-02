@@ -24,12 +24,4 @@
         android:contentDescription="@string/fit_image_to_scan"
         />
 
-    <TextView
-        android:id="@+id/DebugTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="GPS Koordinaten" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
