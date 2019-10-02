@@ -90,3 +90,18 @@ sceneform.asset('sampledata/models/cube.fbx',
         'default',
         'sampledata/models/cube.sfa',
         'src/main/assets/cube')
+
+sceneform.asset('sampledata/models/hiker.fbx',
+        'default',
+        'sampledata/models/hiker.sfa',
+        'src/main/assets/hiker')
+
+sceneform.asset('sampledata/models/Cross.fbx',
+        'default',
+        'sampledata/models/Cross.sfa',
+        'src/main/assets/Cross')
+
+sceneform.asset('sampledata/models/Binoculars.fbx',
+        'default',
+        'sampledata/models/Binoculars.sfa',
+        'src/main/assets/Binoculars')

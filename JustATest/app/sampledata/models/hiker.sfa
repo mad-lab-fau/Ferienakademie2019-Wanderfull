@@ -1,0 +1,62 @@
+{
+  animations: [
+    {
+      path: 'sampledata/models/hiker.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Steel - Satin',
+      parameters: [
+        {
+          baseColor: [
+            0.62745099999999998,
+            0.62745099999999998,
+            0.62745099999999998,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/models/hiker.fbx',
+    name: 'hiker',
+    recenter: 'root',
+    scale: 3.7524359999999999,
+  },
+  version: '0.54:2',
+}

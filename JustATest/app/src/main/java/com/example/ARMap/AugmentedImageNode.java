@@ -50,6 +50,9 @@ public class AugmentedImageNode extends AnchorNode {
   // first construction of an instance, and then used when the image is set.
   private static CompletableFuture<ModelRenderable> mapModel;
   public static CompletableFuture<ModelRenderable> marker;
+  public static CompletableFuture<ModelRenderable> hiker;
+  public static CompletableFuture<ModelRenderable> cross;
+  public static CompletableFuture<ModelRenderable> binoculars;
   //private static CompletableFuture<Material> material;
   public static CompletableFuture<ModelRenderable> cube;
   private static CompletableFuture<Texture> texture;
@@ -65,7 +68,9 @@ public class AugmentedImageNode extends AnchorNode {
 
       marker = ModelRenderable.builder().setSource(context,Uri.parse("kugel.sfb")).build();
       cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
-
+      hiker = ModelRenderable.builder().setSource(context,Uri.parse("hiker.sfb")).build();
+      cross = ModelRenderable.builder().setSource(context,Uri.parse("Cross.sfb")).build();
+      binoculars = ModelRenderable.builder().setSource(context,Uri.parse("binoculars.sfb")).build();
       //MaterialFactory materialFactory= new MaterialFactory();
       //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
 
