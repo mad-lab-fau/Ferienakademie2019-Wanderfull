@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".DisplayFriends"
+    tools:showIn="@layout/activity_friends">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="*"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="15dp">
+
+
+        <TableRow
+            android:id="@+id/Friend1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="1"
+                android:text="@string/friend1"
+                android:padding="3dip" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:text="Open..."
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Friend2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="1"
+                android:text="@string/friend2"
+                android:padding="3dip" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:text="Open..."
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Friend3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="1"
+                android:text="@string/friend3"
+                android:padding="3dip" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:text="Open..."
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/Friend4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="1"
+                android:text="@string/friend4"
+                android:padding="3dip" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:text="Open..."
+                android:padding="3dip" />
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
