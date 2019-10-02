@@ -364,12 +364,13 @@ public class MainActivity extends AppCompatActivity {
                 // mountain peaks
                 Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) -0.03);  //kassianspitze
                 Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
-                Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);  //radlspitz
 
                 if(node.marker.isDone() && !peaksDrawn) {
                     setPeaks(peakLocation1);
                     setPeaks(peakLocation2);
                     setPeaks(peakLocation3);
+                    peaksDrawn = true;
                 }
 
             }
