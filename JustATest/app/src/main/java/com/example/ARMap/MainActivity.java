@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab2;
     private FloatingActionButton fab3;
 
-    private boolean isFABOpen;
+    private boolean isFABOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,11 +134,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
                 edit().clear().apply();
         fab = findViewById(R.id.fab);
-        fab1 = findViewById(R.id.fab1);
+        /*ab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
+        fab3 = findViewById(R.id.fab3);*/
 
         fab.setOnClickListener(this);
+        fab.setAlpha(0.5f);
+
+//        fab1.setOnClickListener(this);
+//        fab2.setOnClickListener(this);
+//        fab3.setOnClickListener(this);
     }
 
     @Override
@@ -228,16 +234,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                if (!isFABOpen) {
-                    isFABOpen = true;
-                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
-                } else {
+                if (isFABOpen) {
                     isFABOpen = false;
-                    fab1.animate().translationY(0);
-                    fab2.animate().translationY(0);
-                    fab3.animate().translationY(0);
+                    fab.setAlpha(0.5f);
+
+//                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+//                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+//                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+                } else {
+                    isFABOpen = true;
+                    fab.setAlpha(1f);
+
+//                    fab1.animate().translationY(0);
+//                    fab2.animate().translationY(0);
+//                    fab3.animate().translationY(0);
                 }
                 break;
         }
@@ -380,7 +390,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 node.markerNode.setLocalPosition(markerLocation);
 
 
-                node.mapNode.setRenderable(node.mapModel_satellite.getNow(null));
+            if(!isFABOpen) {
+                if(node.mapNode2.getParent()!=null){
+                    node.removeChild(node.mapNode2);
+                }
+                node.addChild(node.mapNode1);
+
+            }else{
+                node.removeChild(node.mapNode1);
+                //node.addChild(node.mapNode2);
+            }
 
                 Log.d("SELECT TRACK", "onUpdateFrame: " + track);
 
