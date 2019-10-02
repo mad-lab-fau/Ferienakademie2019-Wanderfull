@@ -31,7 +31,7 @@
             android:label="@string/title_activity_display_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".DisplaySavedMaps"
+            android:name=".DisplaySavedTracks"
             android:label="@string/title_activity_display_saved_maps"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
