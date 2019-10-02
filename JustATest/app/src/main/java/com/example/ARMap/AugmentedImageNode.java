@@ -57,7 +57,8 @@ public class AugmentedImageNode extends AnchorNode {
   public  CompletableFuture<ModelRenderable> yellow_cube;
   private static CompletableFuture<Texture> texture;
   public static Node markerNode;
-  public static Node mapNode;
+  public static Node mapNode1;
+  public static Node mapNode2;
 
   public AugmentedImageNode(Context context) {
     // Upon construction, start loading the models for the corners of the frame.
@@ -120,12 +121,18 @@ public class AugmentedImageNode extends AnchorNode {
 
 
     localPosition = mapGPS(46.730481f,11.395109f,0f);
-    mapNode = new Node();
-    mapNode.setParent(this);
+    mapNode1 = new Node();
+    mapNode2 = new Node();
+
     //mapNode.setLocalScale(new Vector3(1f, 1f, 1f));
     //transform.localScale(new Vector3(image.getExtentX(), image.getExtentZ(), 1))
-    mapNode.setLocalPosition(localPosition);
-    mapNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
+    mapNode1.setLocalPosition(localPosition);
+    mapNode1.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
+    mapNode1.setRenderable(mapModel_satellite.getNow(null));
+
+    mapNode2.setLocalPosition(localPosition);
+    mapNode2.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
+    mapNode2.setRenderable(mapModel_kompass.getNow(null));
 
 
     markerNode = new Node();

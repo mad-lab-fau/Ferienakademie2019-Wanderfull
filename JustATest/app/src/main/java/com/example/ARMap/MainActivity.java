@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab2;
     private FloatingActionButton fab3;
 
-    private boolean isFABOpen;
+    private boolean isFABOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,11 +134,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
                 edit().clear().apply();
         fab = findViewById(R.id.fab);
-        fab1 = findViewById(R.id.fab1);
+        /*ab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
+        fab3 = findViewById(R.id.fab3);*/
 
         fab.setOnClickListener(this);
+        fab.setAlpha(0.5f);
+
+//        fab1.setOnClickListener(this);
+//        fab2.setOnClickListener(this);
+//        fab3.setOnClickListener(this);
     }
 
     @Override
@@ -228,16 +234,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                if (!isFABOpen) {
-                    isFABOpen = true;
-                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
-                } else {
+                if (isFABOpen) {
+                    //start
                     isFABOpen = false;
-                    fab1.animate().translationY(0);
-                    fab2.animate().translationY(0);
-                    fab3.animate().translationY(0);
+                    fab.setAlpha(0.5f);
+
+//                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+//                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+//                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+                } else {
+                    //first click
+                    isFABOpen = true;
+                    fab.setAlpha(1f);
+
+//                    fab1.animate().translationY(0);
+//                    fab2.animate().translationY(0);
+//                    fab3.animate().translationY(0);
                 }
                 break;
         }
@@ -249,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         locationListener = new MyLocationListener();
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
-
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -284,13 +295,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         /*
-        * Get GPS Tracks from activity_saved_tracks
-        * Here the Track ID is requested.
-        * You will get the value with the key "trackID"
-        * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
-        * The preferences are deleted onCreate()
-        * !!! NOT SURE WHERE TO  PUT THIS !!!!
-        * */
+         * Get GPS Tracks from activity_saved_tracks
+         * Here the Track ID is requested.
+         * You will get the value with the key "trackID"
+         * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
+         * The preferences are deleted onCreate()
+         * !!! NOT SURE WHERE TO  PUT THIS !!!!
+         * */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         track = prefs.getString("trackID", "no id"); //no id: default value
 
@@ -350,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case PAUSED:
                     // When an image is in PAUSED state, but the camera is not PAUSED, it has been detected,
                     // but not yet tracked.
-                    String text = "Detected Map: "+augmentedImage.getName();
+                    String text = "Detected Map: " + augmentedImage.getName();
                     SnackbarHelper.getInstance().showMessage(this, text);
                     break;
 
@@ -380,15 +391,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 node.markerNode.setLocalPosition(markerLocation);
 
 
-                node.mapNode.setRenderable(node.mapModel_satellite.getNow(null));
+                if (!isFABOpen) {
+
+                    node.removeChild(node.mapNode2);
+                    node.addChild(node.mapNode1);
+
+                } else {
+                    node.removeChild(node.mapNode1);
+                    node.addChild(node.mapNode2);
+                }
 
                 Log.d("SELECT TRACK", "onUpdateFrame: " + track);
 
-                if ((track.equals(DisplaySavedTracks.trackList[0]))&&!track1) {
+                if ((track.equals(DisplaySavedTracks.trackList[0])) && !track1) {
                     Gpx radl = readGPX("radlspitz.gpx");
                     drawGPS(radl, 2);
                     track1 = true;
-                } else if ((track.equals(DisplaySavedTracks.trackList[1])&&!track2)) {
+                } else if ((track.equals(DisplaySavedTracks.trackList[1]) && !track2)) {
                     Gpx sonntag = readGPX("FA_sonntag.gpx");
                     drawGPS(sonntag, 1);
                     track2 = true;
