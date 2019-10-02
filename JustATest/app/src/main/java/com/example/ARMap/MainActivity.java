@@ -10,6 +10,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -34,7 +36,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -51,7 +55,8 @@ import io.ticofab.androidgpxparser.parser.domain.Track;
 import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
 import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
 
     private class MyLocationListener implements LocationListener {
         @Override
@@ -95,7 +100,12 @@ public class MainActivity extends AppCompatActivity {
     private Gpx parsedGpx = null;
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
 
+    private FloatingActionButton fab;
+    private FloatingActionButton fab1;
+    private FloatingActionButton fab2;
+    private FloatingActionButton fab3;
 
+    private boolean isFABOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +118,8 @@ public class MainActivity extends AppCompatActivity {
         fitToScanView = findViewById(R.id.image_view_fit_to_scan);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         try {
             InputStream in = getAssets().open("radlspitz.gpx");
             parsedGpx = mParser.parse(in);
@@ -128,6 +136,12 @@ public class MainActivity extends AppCompatActivity {
         // Delete as soon as possible
         PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
                 edit().clear().apply();
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -213,13 +227,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                if (!isFABOpen) {
+                    isFABOpen = true;
+                    fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+                    fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+                    fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+                } else {
+                    isFABOpen = false;
+                    fab1.animate().translationY(0);
+                    fab2.animate().translationY(0);
+                    fab3.animate().translationY(0);
+                }
+                break;
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         locationListener = new MyLocationListener();
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
-
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -254,16 +287,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         /*
-        * Get GPS Tracks from activity_saved_tracks
-        * Here the Track ID is requested.
-        * You will get the value with the key "trackID"
-        * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
-        * The preferences are deleted onCreate()
-        * !!! NOT SURE WHERE TO  PUT THIS !!!!
-        * */
+         * Get GPS Tracks from activity_saved_tracks
+         * Here the Track ID is requested.
+         * You will get the value with the key "trackID"
+         * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
+         * The preferences are deleted onCreate()
+         * !!! NOT SURE WHERE TO  PUT THIS !!!!
+         * */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String data = prefs.getString("trackID", "no id"); //no id: default value
-        if(!"no id".equals(data)) {
+        if (!"no id".equals(data)) {
             //popup to see something
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(true);
@@ -295,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     private int i = 0;
     private int a = 0;
     private boolean drawGPS = false;
-    boolean friendsDrawn= false;
+    boolean friendsDrawn = false;
     boolean peaksDrawn = false;
 
 
@@ -351,22 +384,22 @@ public class MainActivity extends AppCompatActivity {
                     drawGPS = true;
                 }
 
-                Vector3 friendLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
-                Vector3 friendLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
-                Vector3 friendLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
-                if(node.marker.isDone()&&!friendsDrawn) {
+                Vector3 friendLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) - 0.03);
+                Vector3 friendLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) - 0.03);
+                Vector3 friendLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) - 0.03);
+                if (node.marker.isDone() && !friendsDrawn) {
                     setFakeFriends(friendLocation1);
                     setFakeFriends(friendLocation2);
                     setFakeFriends(friendLocation3);
-                    friendsDrawn=true;
+                    friendsDrawn = true;
                 }
 
                 // mountain peaks
-                Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) -0.03);  //kassianspitze
-                Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
-                Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
+                Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) - 0.03);  //kassianspitze
+                Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) - 0.03);  //morgenrast
+                Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) - 0.03);
 
-                if(node.marker.isDone() && !peaksDrawn) {
+                if (node.marker.isDone() && !peaksDrawn) {
                     setPeaks(peakLocation1);
                     setPeaks(peakLocation2);
                     setPeaks(peakLocation3);
