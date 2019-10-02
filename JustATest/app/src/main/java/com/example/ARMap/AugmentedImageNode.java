@@ -70,7 +70,7 @@ public class AugmentedImageNode extends AnchorNode {
       cube = ModelRenderable.builder().setSource(context,Uri.parse("cube.sfb")).build();
       hiker = ModelRenderable.builder().setSource(context,Uri.parse("hiker.sfb")).build();
       cross = ModelRenderable.builder().setSource(context,Uri.parse("Cross.sfb")).build();
-      binoculars = ModelRenderable.builder().setSource(context,Uri.parse("binoculars.sfb")).build();
+      binoculars = ModelRenderable.builder().setSource(context,Uri.parse("Binoculars.sfb")).build();
       //MaterialFactory materialFactory= new MaterialFactory();
       //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
 

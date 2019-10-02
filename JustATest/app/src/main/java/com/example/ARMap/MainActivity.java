@@ -362,13 +362,15 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // mountain peaks
-                Vector3 peakLocation1 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
-                Vector3 peakLocation2 = node.mapGPS(46.688172, 11.420636, (1570 * 0.00004) -0.03);
-                Vector3 peakLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
+                Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) -0.03);  //kassianspitze
+                Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
+                Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);
 
-                /*if(node.marker.isDone() && !peaksDrawn) {
-
-                }*/
+                if(node.marker.isDone() && !peaksDrawn) {
+                    setPeaks(peakLocation1);
+                    setPeaks(peakLocation2);
+                    setPeaks(peakLocation3);
+                }
 
             }
 
@@ -412,7 +414,10 @@ public class MainActivity extends AppCompatActivity {
         trackNode.setParent(node);
         if (node.hiker.isDone()) {
             Log.d("GPX", "onUpdateFrame: Friends Done");
+            friendLocation.y += 0.01;
             trackNode.setLocalPosition(friendLocation);
+            trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
+            trackNode.setLocalRotation(new Quaternion(new Vector3(1f, 0f, 0f), 90f));
             trackNode.setRenderable(node.hiker.getNow(null));
         }
     }
@@ -421,8 +426,10 @@ public class MainActivity extends AppCompatActivity {
         Node trackNode = new Node();
         trackNode.setParent(node);
         if (node.cross.isDone()) {
-            Log.d("GPX", "onUpdateFrame: Friends Done");
+            Log.d("GPX", "onUpdateFrame: Cross Done");
             trackNode.setLocalPosition(peakLocation);
+            trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
+            trackNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 90f));
             trackNode.setRenderable(node.cross.getNow(null));
         }
     }
