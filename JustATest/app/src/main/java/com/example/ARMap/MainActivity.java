@@ -2,13 +2,14 @@ package com.example.ARMap;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.sceneform.FrameTime;
@@ -20,12 +21,14 @@ import com.google.ar.sceneform.ux.ArFragment;
 
 import com.example.ARMap.common.helpers.SnackbarHelper;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -93,11 +96,12 @@ public class MainActivity extends AppCompatActivity {
     private final Map<AugmentedImage, AugmentedImageNode> augmentedImageMap = new HashMap<>();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        // Deletes shared preferences
         tv = (TextView) findViewById(R.id.DebugTest);
         tv.setText(message);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
@@ -120,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("GPXParse", "onCreate: Track loaded");
         }
+
+        // Delete as soon as possible
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).
+                edit().clear().apply();
     }
 
     @Override
@@ -132,6 +140,16 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
+                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    Activity#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for Activity#requestPermissions for more details.
+                        return;
+                    }
                     locationManager.requestLocationUpdates(LocationManager
                             .GPS_PROVIDER, 5000, 10, locationListener);
                 } else {
@@ -203,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.LOCATION_SERVICE);
 
 
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -231,6 +250,38 @@ public class MainActivity extends AppCompatActivity {
         }
         if (augmentedImageMap.isEmpty()) {
             fitToScanView.setVisibility(View.VISIBLE);
+        }
+
+
+        /*
+        * Get GPS Tracks from activity_saved_tracks
+        * Here the Track ID is requested.
+        * You will get the value with the key "trackID"
+        * The value is the same as the track name, but that can be changed in DisplaySavedTracks.java if you want
+        * The preferences are deleted onCreate()
+        * !!! NOT SURE WHERE TO  PUT THIS !!!!
+        * */
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String data = prefs.getString("trackID", "no id"); //no id: default value
+        if(!"no id".equals(data)) {
+            //popup to see something
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setCancelable(true);
+            builder.setTitle("Track was selected");
+            builder.setMessage(data);
+            builder.setPositiveButton("Confirm",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 
@@ -328,5 +379,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+
     }
 }
