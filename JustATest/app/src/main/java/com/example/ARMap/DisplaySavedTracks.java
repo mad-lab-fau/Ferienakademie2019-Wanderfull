@@ -1,7 +1,9 @@
 package com.example.ARMap;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,10 +24,12 @@ public class DisplaySavedTracks extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //start the normal navigation toolbar
         setContentView(R.layout.activity_saved_tracks);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Manage the floating action button
         FloatingActionButton tracks_button = findViewById(R.id.tracks_button);
         tracks_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,29 +39,29 @@ public class DisplaySavedTracks extends AppCompatActivity {
             }
         });
 
-        ListView mlistView = (ListView) findViewById(R.id.idListView);
-        mlistView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                new String[] {"Für Leistungssportler (Freitag)", "FA Sonntagswanderung", "Map 3"}));
+        /*
+        * List View Stuff is managed
+        * */
 
+        ListView mlistView = (ListView) findViewById(R.id.idListView);
+        String[] trackList = new String[] {"Für Leistungssportler (Freitag)", "FA Sonntagswanderung", "Map 3"}; //Liste mit allen Tracks
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        //add the items from trackList to the list
+        mlistView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, trackList));
+
+        // onClick Listener that sends the clicked
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // When clicked, show a toast with the TextView text Game, Help, Home
                 Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
                         Toast.LENGTH_SHORT).show();
                 String sText = ((TextView) view).getText().toString();
-                Intent intent = null;
-                if(sText.equals("Für Leistungssportler (Freitag)")) {
-                    intent = new Intent(getBaseContext(), MainActivity.class);
-                } else if(sText.equals("FA Sonntagswanderung")) {
-                    intent = new Intent(getBaseContext(), MainActivity.class);
-                } else if(sText.equals("Map 3")) {
-                    intent = new Intent(getBaseContext(), MainActivity.class);
-                }
-                if(intent != null)
-                    finish();
-                    startActivity(intent);
+                editor.putString("trackID", sText); //InputString: from the EditText
+                editor.apply();
+                finish(); // close the current activity
             }
         });
 
