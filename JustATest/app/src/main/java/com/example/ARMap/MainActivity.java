@@ -297,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean drawGPS = false;
     boolean friendsDrawn= false;
     boolean peaksDrawn = false;
+    boolean panoramasDrawn = false;
 
 
     private void onUpdateFrame(FrameTime frameTime) {
@@ -363,14 +364,24 @@ public class MainActivity extends AppCompatActivity {
 
                 // mountain peaks
                 Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) -0.03);  //kassianspitze
-                Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
+                //Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
                 Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);  //radlspitz
 
                 if(node.marker.isDone() && !peaksDrawn) {
                     setPeaks(peakLocation1);
-                    setPeaks(peakLocation2);
+                    //setPeaks(peakLocation2);
                     setPeaks(peakLocation3);
                     peaksDrawn = true;
+                }
+
+                // Panorama Points
+                Vector3 panoramaLocation1 = node.mapGPS(46.707274, 11.379364, (2375 * 0.00004) -0.03);  //Leiterspitz
+                Vector3 panoramaLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
+
+                if(node.marker.isDone() && !panoramasDrawn) {
+                    setPanorama(panoramaLocation1);
+                    setPanorama(panoramaLocation2);
+                    panoramasDrawn = true;
                 }
 
             }
@@ -432,6 +443,19 @@ public class MainActivity extends AppCompatActivity {
             trackNode.setLocalScale(new Vector3(0.2f, 0.2f, 0.2f));
             trackNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 90f));
             trackNode.setRenderable(node.cross.getNow(null));
+        }
+    }
+
+    private void setPanorama(Vector3 loc) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.binoculars.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Panorama Done");
+            loc.y -= 0.01;
+            trackNode.setLocalPosition(loc);
+            trackNode.setLocalScale(new Vector3(0.02f, 0.02f, 0.02f));
+            //trackNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 90f));
+            trackNode.setRenderable(node.binoculars.getNow(null));
         }
     }
 }
