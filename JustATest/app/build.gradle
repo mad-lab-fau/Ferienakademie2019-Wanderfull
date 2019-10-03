@@ -139,3 +139,8 @@ sceneform.asset('sampledata/models/full_map_satellite.fbx',
         'default',
         'sampledata/models/full_map_satellite.sfa',
         'src/main/assets/full_map_satellite')
+
+sceneform.asset('sampledata/models/full_map_satelite3.fbx',
+        'default',
+        'sampledata/models/full_map_satelite3.sfa',
+        'src/main/assets/full_map_satelite3')

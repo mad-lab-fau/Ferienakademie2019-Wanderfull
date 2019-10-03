@@ -55,7 +55,7 @@ public class AugmentedImageNode extends AnchorNode {
   public  CompletableFuture<ModelRenderable> green_cube;
   public  CompletableFuture<ModelRenderable> red_cube;
   public  CompletableFuture<ModelRenderable> yellow_cube;
-  private static CompletableFuture<Texture> texture;
+  //private static CompletableFuture<Texture> texture;
   public static Node markerNode;
   public static Node mapNode1;
   public static Node mapNode2;
@@ -65,15 +65,15 @@ public class AugmentedImageNode extends AnchorNode {
     if (mapModel_satellite == null) {
       mapModel_satellite =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .setSource(context, Uri.parse("full_map_satellite.sfb"))
                       .build();
       mapModel_transparent =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .setSource(context, Uri.parse("full_map_kompass.sfb"))
                       .build();
       mapModel_kompass =
               ModelRenderable.builder()
-                      .setSource(context, Uri.parse("kompass_all.sfb"))
+                      .setSource(context, Uri.parse("full_map_kompass.sfb"))
                       .build();
 
 
@@ -133,6 +133,7 @@ public class AugmentedImageNode extends AnchorNode {
     mapNode2.setLocalPosition(localPosition);
     mapNode2.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 180f));
     mapNode2.setRenderable(mapModel_kompass.getNow(null));
+
 
 
     markerNode = new Node();

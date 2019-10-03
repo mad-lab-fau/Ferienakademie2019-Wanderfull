@@ -6,7 +6,7 @@
   ],
   materials: [
     {
-      name: "Material.007",
+      name: "overlay",
       parameters: [
         {
           baseColor: [
@@ -64,7 +64,7 @@
                      name: 'gmoverlay_large3',
                      injections: [
                             {usage: "BaseColor",
-                            material_name: "Material.007",
+                            material_name: "overlay",
                             },
 
                      ],
