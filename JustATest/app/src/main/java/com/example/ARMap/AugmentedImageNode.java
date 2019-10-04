@@ -24,12 +24,9 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
-import com.google.ar.sceneform.rendering.Color;
-import com.google.ar.sceneform.rendering.Material;
-import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.rendering.Texture;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -42,7 +39,7 @@ public class AugmentedImageNode extends AnchorNode {
 
   private static final String TAG = "AugmentedImageNode";
 
-  // The augmented image represented by this node.
+    // The augmented image represented by this node.
   private AugmentedImage image;
 
   // Models.  We use completable futures here to simplify
@@ -53,6 +50,7 @@ public class AugmentedImageNode extends AnchorNode {
   public static CompletableFuture<ModelRenderable> hiker;
   public static CompletableFuture<ModelRenderable> cross;
   public static CompletableFuture<ModelRenderable> binoculars;
+  public static CompletableFuture<ViewRenderable> playerName;
   //private static CompletableFuture<Material> material;
   public static CompletableFuture<ModelRenderable> cube;
   private static CompletableFuture<Texture> texture;
@@ -71,7 +69,10 @@ public class AugmentedImageNode extends AnchorNode {
       hiker = ModelRenderable.builder().setSource(context,Uri.parse("hiker.sfb")).build();
       cross = ModelRenderable.builder().setSource(context,Uri.parse("Cross.sfb")).build();
       binoculars = ModelRenderable.builder().setSource(context,Uri.parse("Binoculars.sfb")).build();
-      //MaterialFactory materialFactory= new MaterialFactory();
+      playerName = ViewRenderable.builder().setView(context, R.layout.player_name).build();
+      //          .thenAccept(renderable -> playerNameViewRenderable = renderable);
+
+        //MaterialFactory materialFactory= new MaterialFactory();
       //material = materialFactory.makeOpaqueWithColor(context,new Color(0,1,0,1));
 
 

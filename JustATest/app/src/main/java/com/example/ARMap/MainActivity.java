@@ -16,6 +16,7 @@ import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
 
@@ -357,25 +358,28 @@ public class MainActivity extends AppCompatActivity {
                 Vector3 friendLocation3 = node.mapGPS(46.688700, 11.420630, (1570 * 0.00004) -0.03);
                 if(node.marker.isDone()&&!friendsDrawn) {
                     setFakeFriends(friendLocation1);
+                    setText(friendLocation1, "Max Mustermann");
                     setFakeFriends(friendLocation2);
+                    setText(friendLocation2, "Friend2");
                     setFakeFriends(friendLocation3);
+                    setText(friendLocation3, "Friend3");
                     friendsDrawn=true;
                 }
 
                 // mountain peaks
                 Vector3 peakLocation1 = node.mapGPS(46.708629, 11.496679, (2581 * 0.00004) -0.03);  //kassianspitze
-                Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
+                //Vector3 peakLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
                 Vector3 peakLocation3 = node.mapGPS(46.713344, 11.381113, (2422 * 0.00004) -0.03);  //radlspitz
 
                 if(node.marker.isDone() && !peaksDrawn) {
                     setPeaks(peakLocation1);
-                    setPeaks(peakLocation2);
+                    //setPeaks(peakLocation2);
                     setPeaks(peakLocation3);
                     peaksDrawn = true;
                 }
 
                 Vector3 panoramaLocation1 = node.mapGPS(46.707274, 11.379364, (2375 * 0.00004) -0.03);  //Leiterspitz
-                //Vector3 panoramaLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
+                Vector3 panoramaLocation2 = node.mapGPS(46.705322, 11.448078, (2351 * 0.00004) -0.03);  //morgenrast
 
                 if(node.marker.isDone() && !panoramasDrawn) {
                     setPanorama(panoramaLocation1);
@@ -456,6 +460,22 @@ public class MainActivity extends AppCompatActivity {
             trackNode.setLocalScale(new Vector3(0.02f, 0.02f, 0.02f));
             //trackNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 90f));
             trackNode.setRenderable(node.binoculars.getNow(null));
+        }
+    }
+
+    private void setText(Vector3 loc, String text) {
+        Node trackNode = new Node();
+        trackNode.setParent(node);
+        if (node.playerName.isDone()) {
+            Log.d("GPX", "onUpdateFrame: Name Done");
+            //loc.y += 0.01;
+            trackNode.setLocalPosition(loc);
+            trackNode.setLocalScale(new Vector3(0.05f, 0.05f, 0.05f));
+            //trackNode.setLocalRotation(new Quaternion(new Vector3(0f, 1f, 0f), 90f));
+            ViewRenderable viewRenderable = node.playerName.getNow(null).Builder();
+            TextView textView = (TextView) viewRenderable.getView();
+            textView.setText(text);
+            trackNode.setRenderable(viewRenderable);
         }
     }
 }
